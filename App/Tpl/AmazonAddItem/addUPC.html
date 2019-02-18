@@ -1,0 +1,145 @@
+
+<link href="__PUBLIC__/NewTpl/css/bootstrap.min.css-v=3.3.5.css" rel="stylesheet">
+<link href="__PUBLIC__/NewTpl/font-awesome/css/font-awesome.css" rel="stylesheet">
+<link href="__PUBLIC__/NewTpl/css/plugins/iCheck/custom.css" rel="stylesheet">
+<!-- morris -->
+
+<!-- fullcalendar -->
+
+<link href="__PUBLIC__/NewTpl/css/style.css" rel="stylesheet">
+
+<!-- Data Tables -->
+<!--<link href="__PUBLIC__/NewTpl/css/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet">-->
+<link href="__PUBLIC__/NewTpl/css/custom.css" rel="stylesheet">
+<link rel="stylesheet" href="/Public/css/pure-min.css" />
+<link rel="shortcut icon" href="/newerp/img/favicon.ico" />
+<script src="__PUBLIC__/NewTpl/js/jquery.min.js-v=2.1.4"></script>
+<script src="__PUBLIC__/NewTpl/js/jquery-ui-1.10.4.min.js"></script>
+<script src="__PUBLIC__/NewTpl/js/bootstrap.min.js-v=3.3.5"></script>
+
+<!-- Custom and plugin javascript -->
+<script src="__PUBLIC__/NewTpl/js/inspinia.js"></script>
+<script src="__PUBLIC__/NewTpl/js/plugins/pace/pace.min.js"></script>
+<block name="bread">
+    <style>
+        th[type=sort] {
+            cursor: pointer;
+        }
+
+        .text-primary{
+            color:#1ab394;
+        }
+        .search-bar > div > li, .search-bar > div > div > li {
+            width: 120px;
+            float: left;
+            margin: 5px;
+            display: block;
+            height: 30px;
+        }
+        .ibox-content{
+            padding:0
+        }
+
+        .search-bar > div > .searchTitle, .search-bar > div >  div > .searchTitle {
+            line-height: 30px;
+        }
+
+        .custom-table th{
+            font-weight: normal;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .custom-table td{
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+
+    </style>
+</block>
+<block name="content">
+    <div class="row" style="margin:0px;">
+        <div class="col-sm-12" style="padding:0px;">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content">
+                    <form id="saveForm" style="margin:0px">
+                        <div style="width:550px;margin-top:30px;height: 300px;overflow: hidden" class="search-bar">
+                            <div style="width:100%; margin-left: 50px">
+                                <li style="font-size: 15px; font-weight: bold;">输入UPC</li>
+                                <div style="clear: both"></div>
+                            </div>
+                            <div id="infoInput" style="width:100%;height: 120px">
+                                <li style="width:450px; margin-left: 50px">
+                                    <textarea name="upcs" id="upcs" cols="35" rows="10" placeholder="upc间只要不连续即可"></textarea>
+                                </li>
+                                <div style="clear: both;"></div>
+                            </div>
+                            <div style="width:100%;margin-top: 90px">
+                                <div style="clear: both;"></div>
+                                <li style="width: 130px;margin-left: 60px">
+                                    <button style="width: 100px; border-radius: 5px" type="button" onclick="addUPC(this)" class="btn btn-primary">保存
+                                    </button>
+                                </li>
+                                <li style="width: 120px">
+                                    <button style="width: 100px; border-radius: 5px" onclick="closeMe()" type="button" class="btn btn-danger">取消
+                                    </button>
+                                </li>
+                                <div style="clear: both"></div>
+                            </div>
+                        </div>
+                        <input type="hidden" name="from" value="{$from}" >
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</block>
+
+<!--模态框html-->
+<block name="modai_html"></block>
+
+<!--额外js-->
+<block name="src_js">
+    <link href="__PUBLIC__/NewTpl/css/plugins/chosen_v1.6.2/chosen.css" rel="stylesheet">
+    <script type="text/javascript" src="__PUBLIC__/NewTpl/css/plugins/chosen_v1.6.2/chosen.jquery.min.js"></script>
+    <script src="__PUBLIC__/NewTpl/js/plugins/layer/laydate/laydate.js"></script>
+    <script src="__PUBLIC__/NewTpl/layer/layer.js"></script>
+    <script>
+
+        //关闭页面
+        function closeMe()
+        {
+            parent.layer.closeAll();
+        }
+
+        // 保存设置的参数
+        function addUPC(that)
+        {
+            $(that ).prop('disabled', true);
+            if($('#upcs' ).val() == '') {
+                layer.msg('upc不能为空！');
+                $(that ).prop('disabled', false);
+                return;
+            }
+            var saveData = $('#saveForm' ).serialize();
+            $.ajax( {
+                url : '__SELF__' ,
+                type : 'post',
+                dataType : 'json',
+                data : saveData,
+                success : function(data) {
+                    if(data['code'] == 1) {
+                        layer.msg('保存成功!');
+                        $('.loadUpc', window.parent.document).html('导入UPC('+data['upcNum']+')')
+                        setTimeout(function(){
+                            parent.layer.closeAll();
+                        }, 2000)
+                    } else {
+                        $(that ).prop('disabled', false);
+                        layer.msg(data['msg']);
+                    }
+                }
+            });
+        }
+
+
+    </script>
+</block>

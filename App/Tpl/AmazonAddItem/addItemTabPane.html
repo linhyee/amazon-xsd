@@ -1,0 +1,239 @@
+
+    <div id="accountKDDataAAaccountAA">
+        <fieldset>
+            <legend>产品名(Title) * </legend>
+            <div class="field-group" >
+                <table class="titleListTableAAaccountAA">
+                    <tbody>
+                    <tr class="titletr titleAAaccountAA"><td><input type="text" attr_name="title" account="AAaccountAA" name="AAaccountAA[Product][DescriptionData][Title]" value="LANG{title}" class="mdn-input title" size="120" isRequired="1" datatype="string" /></td><td>&nbsp;&nbsp;</td><td valign="bottom"></td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend>产品描述(Description) * </legend>
+            <div class="field-group">
+                <div class="descriptionDivs htmldescription">
+                    <div class="floatL">
+                        Description:*&nbsp;&nbsp;&nbsp;
+                    </div>
+                    <button type="button" class="showToggle floatR">show / hide</button>
+                    <div style="clear:both"></div>
+                    <p style="width:70%;float:left"><textarea attr_name="Description" account="AAaccountAA" name="AAaccountAA[Product][DescriptionData][Description]"  isRequired="1" datatype="string" class="xheditorForAli" rows="12" cols="80" style="width:90%">LANG{description}</textarea></p>
+                    <div style="clear:both"></div>
+                </div>
+            </div>
+            <div class="field-group"  account="AAaccountAA" >
+                <div class="descriptionDivs bulletPointDivs">
+                    <div class="floatL">
+                        Bullet Point:*&nbsp;&nbsp;&nbsp;
+                        <button type="button" onclick="addBulletPoint('AAaccountAA', this)" class="btn btn-primary">+</button>
+                    </div>
+                    <button type="button" class="showToggle floatR">show / hide</button>
+                    <div style="clear:both"></div>
+                    LANG{bulletPoint}
+                    </div>
+                </div>
+            </div>
+            <div class="field-group" account="AAaccountAA >
+                <div class="descriptionDivs searchTermsDivs" account="AAaccountAA">
+                    <div class="floatL">
+                        Search Terms:*&nbsp;&nbsp;&nbsp;
+                        <button type="button" onclick="addSearchTerms('AAaccountAA', this)" class="btn btn-primary">+</button>
+                    </div>
+                    <button type="button" class="showToggle floatR">show / hide</button>
+                    <div style="clear:both"></div>
+                    <?php if(empty($descriptionData['searchTerms'])) {?>
+                    <div>
+                        <div class="col-md-10">
+                            <input attr_name="Search Terms" type="text"   isRequired="1" datatype="string" name="AAaccountAA[Product][DescriptionData][SearchTerms][]" value="" class="mdn-input shelfDes" size="120" maxlength="128"/>
+                        </div>
+                        <div class="col-md-2">
+                            <button type="button" onclick="delSearchTerms('AAaccountAA', this)" class="btn btn-primary">-</button>
+                        </div>
+                    </div>
+                    <div style="clear:both"></div>
+                    <?php } else {?>
+                    <?php foreach($descriptionData['searchTerms'] as $searchTerm) {?>
+                    <div>
+                        <div class="col-md-10">
+                            <input attr_name="Search Terms" type="text"   isRequired="1" datatype="string" name="AAaccountAA[Product][DescriptionData][SearchTerms][]" value="<?php echo $searchTerms;?>" class="mdn-input" size="120" maxlength="128"/>
+                        </div>
+                        <div class="col-md-2">
+                            <button type="button" onclick="delSearchTerms('AAaccountAA', this)" class="btn btn-primary">-</button>
+                        </div>
+                        <div style="clear:both"></div>
+                    </div>
+                    <?php } ?>
+                    <?php }?>
+                </div>
+            </div>
+        </fieldset>
+        <fieldset class="categoryAttribute" account="AAaccountAA">
+            <legend>分类属性 *
+                <!--<button class="btn btn-success btn-sm">定义分类属性</button>-->
+            </legend>
+            <div class="categoryAttr col-md-6">
+                <div class="field-group col-md-12">
+                    <table class="inputTable attrInput" cellspacing="10" cellpadding="0" border="0"><tbody>
+                    {$attrHtml.left}
+                    </tbody></table>
+                </div>
+            </div>
+            <div class="categoryAttrr col-md-6">
+                <div class="field-group col-md-12">
+                    <table class="inputTable attrInput" cellspacing="10" cellpadding="0" border="0"><tbody>
+                    {$attrHtml.right}
+                    </tbody></table>
+                </div>
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend>其他信息(Other Info) * </legend>
+            <div class="field-group">
+                <table class="inputTable" cellspacing="10" cellpadding="0" border="0"><tbody>
+                <tr>
+                    <td class="titlesDiv">Brand<span style="color:red;padding:0 3px;font-size:15px;">*</span></td>
+                    <td class="titlesDiv"><div style="margin:0;">
+                        <b class="floatL"></b>
+                        <button type="button" class="showToggle floatR">show / hide</button>
+                        <div class="clearFloat"></div>
+                        <table class="titleListTableAAaccountAA"><tbody>
+                        <tr class="assembledProductWeight assembledProductWeightAAaccountAA">
+                            <td align="right"></td><td><input attr_name="Brand" class="insertinput" datatype="xsd:string" type="text" name="AAaccountAA[Product][DescriptionData][Brand]" value=""/></td>
+                        </tr>
+                        </tbody></table>
+                    </div></td>
+                </tr>
+                <tr>
+                    <td class="titlesDiv">Condition<span style="color:red;padding:0 3px;font-size:15px;">*</span></td>
+                    <td class="titlesDiv"><div style="margin:0;">
+                        <b class="floatL"></b>
+                        <button type="button" class="showToggle floatR">show / hide</button>
+                        <div class="clearFloat"></div>
+                        <table class="titleListTableAAaccountAA"><tbody>
+                        <tr class="assembledProductWeight assembledProductWeightAAaccountAA">
+                            <td><select attr_name="Condition" isRequired="1" datatype="xsd:string" class="amazonchosen" name="AAaccountAA[Product][Condition]" style="width: 150px;">
+                                <option value="New" >New</option>
+                                <option value="UsedLikeNew" >UsedLikeNew</option>
+                                <option value="UsedVeryGood" >UsedVeryGood</option>
+                                <option value="UsedGood" >UsedGood</option>
+                                <option value="UsedAcceptable" >UsedAcceptable</option>
+                                <option value="CollectibleLikeNew" >CollectibleLikeNew</option>
+                                <option value="CollectibleVeryGood" >CollectibleVeryGood</option>
+                                <option value="CollectibleGood" >CollectibleGood</option>
+                                <option value="CollectibleAcceptable" >CollectibleAcceptable</option>
+                                <option value="Refurbished" >Refurbished</option>
+                                <option value="Club" >Club</option>
+
+                            </select>
+                            </td>
+                        </tr>
+                        </tbody></table>
+                    </div></td>
+                </tr>
+                <tr>
+                    <td class="titlesDiv">Recommended Browse Node<span style="color:red;padding:0 3px;font-size:15px;">*</span></td>
+                    <td class="titlesDiv"><div style="margin:0;">
+                        <b class="floatL"></b>
+                        <button type="button" class="showToggle floatR">show / hide</button>
+                        <div class="clearFloat"></div>
+                        <table class="titleListTableAAaccountAA"><tbody>
+                        <td class="recommendedBrowseNode">
+                            <input type="text" account="AAaccountAA" recommendedBrowseNode="" style="width: 800px" class="insertinput recommendedBrowseNodeKeyWords" placeholder="Search for recommended browse node">
+                            <div class="recommendedBrowseNodeContent raw" style="padding: 20px;max-height: 350px;overflow: scroll;">
+                                <ul></ul>
+                            </div>
+                            <input attr_name="Recommended Browse Node" isRequired="1" datatype="xsd:string" class="recommendedBrowseNodeInput" type="hidden" name="AAaccountAA[Product][DescriptionData][RecommendedBrowseNode]" value=""/>
+                        </td>
+                        </tbody></table>
+                    </div></td>
+                </tr>
+                </tbody></table>
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend>多属性信息 * <div class="variantLeg" account="AAaccountAA" style="display: inline-block; width: 200px"> </div>
+                <div style="display: inline-block;margin-left: 20px; font-size: 13px">打折时间</div>
+                <div style="display: inline-block;"><input name="AAaccountAA[Price][StartDate]" value="{$startDate}" type="text" class="form-control" placeholder="Sale From Date" onclick="laydate({istime: true, format: 'YYYY-MM-DD'})"></div>
+                <div style="display: inline-block;"><input name="AAaccountAA[Price][EndDate]" value="{$endDate}" type="text" class="form-control" placeholder="Sale End Date" onclick="laydate({istime: true, format: 'YYYY-MM-DD'})"></div>
+                <div style="float: right">
+                    <button type="button" style="width:120px;" onclick="addUPC(2)" class="btn btn-primary loadUpc">导入UPC({$upcNum})</button>
+                </div>
+            </legend>
+            <div class="field-group">
+                <table class="layui-table variantTable" lay-skin="line">
+                    <thead>
+                    <tr variantNo="1">
+                        <th style="width: 170px">SKU</th>
+                        <th>Main Image</th>
+                        <th class="addVariantTitle">Standard Price</th>
+                        <th>Sale Price</th>
+                        <th>Inventory</th>
+                        <th>delete</th>
+                    </tr>
+                    </thead>
+                    <tbody account = "AAaccountAA">
+                    <tr>
+                        <td class="variantSku">
+                            <?php if($goods_type == 1) {?>
+                            <select variantno="1" attr_name="sku" isRequired="1" datatype="string" style="width: 90%" onchange="autoCompleteName(this)" name="AAaccountAA[sku][]">
+                                <option value=""></option>
+                                <foreach name="sonSkus" item="sonSku">
+                                    <option value="{$sonSku}">{$sonSku}</option>
+                                </foreach>
+                            </select>
+                            <?php } else {?>
+                            <input style="background: #eee" readonly type="text" name="AAaccountAA[sku][]" value="<?php echo $sku;?>"/>
+                            <?php } ?>
+                        </td>
+                        <td>
+                            <input type="hidden" attr_name="main image" name="AAaccountAA[mainPic]" value="" isRequired="1">
+                            <button elementName="AAaccountAA[sku-][ProductImage][Main]" type="button" class="layui-btn layui-btn-primary choosePicture">添加图片</button>
+                            <?php $file_num = mt_rand(10000,99999);?>
+                            <input style="display: none" name="file{$file_num}" id="file{$file_num}" onchange="mainPictureFileChange(this)" type="file"/>
+                        </td>
+
+                        <td class="addVariantInput" account="AAaccountAA"><input attr_name="StandardPrice" isRequired="1" datatype="float" name="AAaccountAA[sku-][Price][StandardPrice]" value="" type="text"/></td>
+                        <td account="AAaccountAA"><input attr_name="SalePrice" datatype="float" name="AAaccountAA[sku-][Price][SalePrice]" value="" type="text"/></td>
+                        <td><input attr_name="inventory" isRequired="1" datatype="int" name="AAaccountAA[sku-][Inventory][FulfillmentCenterID][Quantity]" type="text"/></td>
+                        <!--<td><input attr_name="UPC" isRequired="1" datatype="int" name="AAaccountAA[sku-][Price][StandardPrice]" type="text"/></td>-->
+                        <td>
+                            <button type="button" onclick="delVariants(this)" class="layui-btn layui-btn-danger">删除</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <eq name="goods_type" value="1">
+                    <button type="button" style="width:120px;"  variantNum="1" onclick="createVariantTable('AAaccountAA', this)" class="btn btn-sm btn-success">添加变体</button>
+                </eq>
+            </div>
+        </fieldset>
+        <fieldset class="extraImageFieldSet" account="AAaccountAA">
+            <legend>附图</legend>
+            <if condition="$goods_type eq 1">
+                <div class="field-group" variantno="1"  sku="">
+                    <!--{$pictureList}-->
+                    <div class="pictureDivs"  style="height:auto;">
+                        <div class="floatL"><span class="extraImageSkuSpan"></span>&nbsp;&nbsp;&nbsp;<button type="button" onclick="chooseExtraPicture(this)" class="chooseExtraPicture">Choose Pictures</button>&nbsp;&nbsp;&nbsp;<button type="button" onclick="addMorePicture(this)" class="addMorePicture">Add More Picture</button></div>
+                        <button type="button" class="showToggle floatR">show / hide</button>
+                        <div class="clearFloat"></div>
+                        <div class="jq22"></div>
+                        <div class="clearFloat"></div>
+                    </div>
+                </div>
+                <else/>
+                <div class="field-group" sku="{$sku}">
+                    <!--{$pictureList}-->
+                    <div class="pictureDivs"  style="height:auto;">
+                        <div class="floatL"><span class="extraImageSkuSpan">{$sku}</span>&nbsp;&nbsp;&nbsp;<button type="button" data-sku="<?php echo $datasku?>" sku="<?php echo $sku;?>" onclick="chooseExtraPicture(this)" class="chooseExtraPicture" account="AAaccountAA">Choose Pictures</button>&nbsp;&nbsp;&nbsp;<button type="button" onclick="addMorePicture(this)" class="addMorePicture" account="AAaccountAA">Add More Picture</button></div>
+                        <button type="button" class="showToggle floatR">show / hide</button>
+                        <div class="clearFloat"></div>
+                        <div class="jq22"></div>
+                        <div class="clearFloat"></div>
+                    </div>
+                </div>
+            </if>
+        </fieldset>
+    </div>
+

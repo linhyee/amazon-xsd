@@ -1,0 +1,1389 @@
+<literal>
+    <script type="text/javascript" src="__PUBLIC__/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/jquery.dragsort-0.5.2.min.js"></script><!--拖拽插件-->
+    <link rel="stylesheet" href="/Public/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="__PUBLIC__/css/modernforms.css">
+    <link rel="stylesheet" href="__PUBLIC__/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/style.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/walmartfrode.css" />
+    <script src="/Public/NewTpl/layer/layer.js"></script>
+    <script src="/Public/NewTpl/js/plugins/layer/laydate/laydate.js"></script>
+    <script type="text/javascript" src="/Public/NewTpl/plugins/layerUI/layui.js"></script>
+    <link rel="stylesheet" href="__PUBLIC__/NewTpl/plugins/layerUI/css/layui.css">
+    <script type="text/javascript" src="__PUBLIC__/NewTpl/plugins/layerUI/layui.js"></script>
+
+    <script type="text/javascript" src="__PUBLIC__/xheditor/jquery-migrate-1.2.1.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/xheditor/xheditor-1.2.1.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/xheditor/xheditor_lang/zh-cn.js"></script>
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/xheditor/common.css"/>
+    <script type="text/javascript" src="__PUBLIC__/ajaxfileupload.js"></script>
+
+    <style>
+        .modern-forms .mdn-select-multiple select {height: 250px; background:#ebf0ef;overflow:scroll;}
+        .specificsDivs {border-bottom: none;}
+        .bigSpecificsDiv, .bigSpecificsDivClass {width: 100%;border: none;}
+        .placeHolder  {
+            border: dashed 2px gray;
+            float: left;
+            position: relative;
+            margin-right: 15px;
+        }
+        a {text-decoration: none !important;}
+
+        .addborder {
+            border:#000 1px solid;
+            padding: 20px;
+            margin: 20px;
+            border-radius: 10px;
+        }
+
+        .testClassName {
+            background:transparent url(__PUBLIC__/xheditor/img/plugin.gif) no-repeat 16px 16px;
+            background-position:2px 2px;
+        }
+        .field-group table .insertinput {
+            height: 34px;
+            width: 200px;
+            border: 1px solid #aaa;
+            background-color: #fff;
+            color: #1f1f1f;
+            text-decoration: none;
+            line-height: 34px;
+            font-size: 14px;
+            padding: 0 0 0 8px;
+            /*margin-bottom: 4px;*/
+        }
+
+        .field-group .titlesDiv .amazonchosen {
+            width: 200px;
+        }
+
+        .attrInput .attrTitle{
+            font-size: 14px;
+            line-height: 20px;
+            height: 30px;
+        }
+
+    </style>
+<link rel="stylesheet" href="__PUBLIC__/libs/bootstrap/css/bootstrap.min.css">
+<script src="__PUBLIC__/libs/bootstrap/js/bootstrap.min.js"></script>
+<link href="__PUBLIC__/css/select2.min.css" rel="stylesheet" />
+<script src="__PUBLIC__/select2.min.js"></script>
+
+</literal>
+<script>
+    function refreshCategoryReloadPage(categoryName, categoryId)
+    {
+        var url = '__SELF__&sku=<?php echo $sku;?>&cateid='+categoryId+'&categoryID='+categoryName
+        window.location.href = url;
+    }
+</script>
+<?php
+    $i = 0;
+?>
+<body>
+<!--<h3>编辑amazon产品信息: {$sku}</h3><hr />-->
+<div class="modern-forms">
+	<div class="modern-container" style="margin-left: 10px;padding: 0 20px; max-width: 90%;margin-top: 10px;">
+		<form id="itemForm" method="post" enctype="multipart/form-data">
+			<fieldset>
+				<legend>基本信息(Base Info) * </legend>
+				<div class="form-row">
+					<div class="col col-5">
+						<div class="field-group">
+							<input type="text" class="mdn-input" name="sku" value="{$sku}" placeholder="sku">
+							<label class="mdn-label">Sku</label>
+							<span class="mdn-bar"></span>
+						</div>
+					</div>
+					<!--<div class="col col-1">-->
+						<!--&lt;!&ndash;<div class="field-group">&ndash;&gt;-->
+							<!--&lt;!&ndash;<span class="mdn-button btn-primary showSimilarDiv" id="showSimilarDiv" style="padding:0 15px;"> Similar </span>&ndash;&gt;-->
+						<!--&lt;!&ndash;</div>&ndash;&gt;-->
+					<!--</div>-->
+					<div class="col col-5">
+						<div class="field-group ">
+							<input type="text" class="mdn-input" id="categoryIdInput" name="categoryID" placeholder="Category ID" value="{$categoryName}" readonly="true" >
+                            <input type="hidden" id="cateid" name="cateid" value="{$cateid}" />
+							<label class="mdn-label">Category NAME</label>
+							<span class="mdn-bar"></span>
+						</div>
+					</div>
+					<div class="col col-1">
+						<div class="field-group">
+							<span class="mdn-button btn-primary showCategoryDiv"> Change </span>
+						</div>
+					</div>
+				</div><!-- end form-row -->
+				<div class="form-row">
+					<div class="col col-3">
+						<div class="field-group mdn-select-multiple categoryDiv" style="display:none;">
+							<select  name="multiselect" size="13" class="categoryClass">
+								{$categoriesArray}
+							</select>
+							<label class="mdn-label" style="margin-top: -8px;">Category Select</label>
+							<span class="mdn-bar"></span>
+						</div>
+					</div>
+				</div>
+			</fieldset>
+			<fieldset>
+				<!--<legend>Account Info</legend>-->
+				<div class="mdn-section">
+					<!--<div class="mdn-label-pos block-label">-->
+						<!--<label class="mdn-label">Sellers</label>-->
+					<!--</div>-->
+					<div class="form-row">
+						{$sellerOption}
+					</div><!-- end form-row -->
+				</div>
+                <ul class="nav nav-tabs nav-lazada" id="myTab">
+                    <?php foreach($sellerArray as $key => $seller) { ?>
+                            <li id = "myTab{$seller}" anchorPoint = "nowshow{$seller}"  name = "sellerchange" account = "{$seller}" role="presentation" style="display: none;"><a  style="font-size: 14px;" href="#attr{$seller}" data-toggle="tab">{$seller}</a></li>
+                    <?php }?>
+                </ul>
+			</fieldset>
+
+
+            <?php foreach($sellerArray as $tabnum => $seller) { ?>
+            <div class="tab-pane fadetab-seller fadetab-pane" id="nowshow{$seller}">
+                <!--防止账户信息复制时特殊字符与账户一致，导致字符串替换出错，在账户前后加'_'   -->
+                <fieldset>
+                    <div style="width:100%;float: left;margin:20px 0;" class="field-group mdn-select specificsDivs" >
+                        <select id = "changeAccount{$seller}" name="changeAccount" class="" style="height:40px;float:left;width:150px;" >
+                            <option value="">---copy to account---</option>
+                            <?php foreach($sellerArray as $val) { ?>
+                            <option value="{$val}">{$val}</option>
+                            <?php }?>
+                        </select>
+                        <span class="mdn-bar"></span>
+                        <button type="button" class="mdn-button btn-primary copyAccount" style="height:40px; margin-left: 5px;" account="{$seller}">Copy information to Account</button>
+                    </div>
+                </fieldset>
+                <?php $i++;?>
+            </div>
+            <?php }?>
+
+
+            <div id="hiddenComonInfo">
+                <input type="hidden" name="goods_type" value="{$goods_type}" />
+                <input type="hidden" name="uploadType" value="1" />
+                <input name="cateNameTree_p" value="{$cateNameTree.parentCateName}" type="hidden">
+                <input name="cateNameTree_cd" value="{$cateNameTree.categoryName}" type="hidden">
+            </div>
+			<div class="mdn-footer">
+				<button type="button" onclick="saveData(this, 1)" class="mdn-button btn-primary submit" name="hasCheck" value="__URL__/addItemSave" >保存</button>
+				<button type="button" onclick="saveData(this, 2)" class="mdn-button btn-primary submit" name="hasCheck" value="__URL__/addItemSave" >保存并加入自动刊登</button>
+				<!--<button type="submit" class="mdn-button submit" name="noCheck" value="__URL__/editItemSave" >Submit without Check</button>-->
+			</div>
+		</form>
+	</div>
+</div>
+<input type="hidden" class="baseUrl" value="__URL__" />
+<div id="bp_temp" style="display:none">
+    <div class="col-md-10">
+        <input attr_name="Bullet Point" type="text"   isRequired="1" datatype="string" name="AAaccountAA[Product][DescriptionData][BulletPoint][]" value="LANG{BP}" class="mdn-input shelfDes" size="120" maxlength="128"/>
+    </div>
+    <div class="col-md-2">
+        <button type="button" onclick="delBulletPoint('AAaccountAA', this)" class="btn btn-primary">-</button>
+    </div>
+    <div style="clear:both"></div>
+</div>
+</body>
+
+<script>
+    /**
+     * 获取随机数
+     * @param Min
+     * @param Max
+     * @returns {*}
+     */
+    function getRandomNum(Min,Max) {
+        var Range = Max - Min;
+        var Rand = Math.random();
+
+        return(Min + Math.round(Rand * Range));
+    }
+
+    function chosenRebuild(id)
+    {
+        $('#' + id).show();
+        $('#' + id).find('select').chosen("destroy");
+        $('#' + id).find('select').chosen();
+        $('#' + id).hide();
+    }
+
+    function initdad(){
+        $('.jq22').dad({draggable:'img'});
+    }
+
+    var initDragFlagObj = {};
+    var account = '';
+    $.each($('.jq22'),function(index,value){
+        account = $(value).prevAll('.floatL').find('b').html();
+        initDragFlagObj[account] = false;
+    })
+
+    //初始化拖拽插件
+    function initDragsort(obj){
+        if($(obj ).attr('isInitDragsort') == 'yes') {
+            return;
+        }
+        $(obj ).attr('isInitDragsort','yes')
+        $('.jq22').css('margin-top', '15px');
+        $(obj).dragsort({
+            dragSelector: "img",	//拖拽绑定的子元素
+            dragBetween: true,		//是否限制拖拽在父元素范围内
+            //dragEnd: addNode, 	//拖拽完成执行回调
+            placeHolderTemplate: "<div class='placeHolder'></div>" //当前拖拽到的位置占位符
+        });
+    }
+
+    function initDrag(){
+        //初始化拖拽插件
+        var jq22 = $('.jq22');
+        var account = '';
+        $.each(jq22, function(index, value){
+            account = $(value).prevAll('.floatL').find('b').html();
+            //console.log(account);
+            if($(value).find('img').length != 0) {
+                $(value).css('margin-top', '10px');
+                $(value).parent().css('height','170px');
+                $(value).dragsort({
+                    dragSelector: "img",	//拖拽绑定的子元素
+                    dragBetween: true,		//是否限制拖拽在父元素范围内
+                    //dragEnd: addNode, 	//拖拽完成执行回调
+                    placeHolderTemplate: "<div class='placeHolder'></div>",//当前拖拽到的位置占位符
+                });
+                initDragFlagObj[account] = true;
+            }
+        });
+    }
+
+    //判断值在不在数组里面
+    function in_array(index,array) {
+        var num = array.length;
+        for(var i = 0;i < num;i++) {
+            if(index == array[i]) {
+                return true;
+            }else {
+                return false;
+            }
+        }
+    }
+
+    //复制数据到选择的账号
+    $('.copyAccount' ).click(function(){
+        //当前账号
+        var account = $(this).attr('account');
+        //复制到哪个账号
+        var changeAccount = $("#changeAccount"+account ).val();
+        if(changeAccount == '' || changeAccount == account) {
+            layer.msg('复制账户错误！');
+            return;
+        }
+        var checkAccountFlag = 0;
+        $('.accountCheckbox' ).each(function() {
+            if($(this ).prop('checked') == true && changeAccount.indexOf($(this ).val()) != -1) {
+                checkAccountFlag = 1;
+                return;
+            }
+        })
+        if(checkAccountFlag == 0) {
+            layer.msg('复制账户未被选中！');
+            return;
+        }
+        $('#nowshow' + account).find('select').chosen("destroy");
+        // 获取刊登信息
+        var kdData = [];
+        $('#accountKDData' + account ).find(':input,textarea' ).each(function() {
+            kdData.push($(this ).val());
+        })
+        var accountKDData = $('#accountKDData' + account ).html();
+        var pattern = new RegExp(account, 'g');
+        accountKDData = accountKDData.replace(pattern, changeAccount);
+        pattern = new RegExp('<input[^>]+?id="xhe[0-9]?[0-9]?[0-9]_fixffcursor"[^>]*>(<span[^>]*>.+?</table>\s*</span>)', 'g');
+        accountKDData = accountKDData.replace(pattern, '');
+        $('#nowshow' + changeAccount).show();
+        $('#accountKDData' + changeAccount ).html(accountKDData);
+        pageInit();
+        $('#nowshow' + account).find('select').chosen();
+        $('#nowshow' + changeAccount).hide();
+        var index = 0;
+        $('#accountKDData' + changeAccount ).find(':input,textarea' ).each(function() {
+            $( this ).val( kdData[ index++ ] );
+        })
+        mainPicAddOneAndTwoClick();
+        addDefaultBrand('nowshow' + changeAccount);
+        documentLoadInit('nowshow' + changeAccount);
+        chooseVarianttheme('nowshow' + changeAccount);
+        if (arrLength(recommendedBrowseNodeClick)) {
+            $('#nowshow' + changeAccount).find('.recommendedBrowseNodeInput,.recommendedBrowseNodeKeyWords').val('');
+            for (var index in recommendedBrowseNodeClick) {
+                $(recommendedBrowseNodeClick[index]).trigger('dblclick');
+            }
+        }
+    });
+
+
+    function pageInit()
+    {
+        var plugin={
+            onlineImg:{c:'testClassName',t:'在线图库',e:function(){
+                var _this=this;
+                var dataSku = $("#sku").attr('data-sku');
+                var url = "__URL__/xheditorOnlinePictures/dataSku/"+dataSku;
+                var title = '备选图片';
+                _this.saveBookmark();
+                //_this.showModal('测试showModal接口','<div style="padding:5px;">模式窗口主体内容</div>',500,300);
+                _this.showIframeModal(title,url,function(v){_this.loadBookmark();_this.pasteHTML(v);},800,600);
+            }}
+        }
+
+        $('.xheditorForAli').xheditor({
+            plugins:plugin,
+            tools:'Cut,Copy,Paste,Pastetext,Blocktag,Fontface,FontSize,Bold,Italic,Underline,Strikethrough,FontColor,BackColor,SelectAll,Removeformat,Align,List,Unlink,Hr,Table,Fullscreen,|Preview',
+            upLinkUrl:$(".baseUrl").val()+"/xheditorUploadFile/immediate/1/",
+            upLinkExt:"zip,rar,txt",
+            upImgUrl:$(".baseUrl").val()+"/xheditorUploadFile/immediate/1/",
+            upImgExt:"jpg,jpeg,gif,png",
+            upFlashUrl:$(".baseUrl").val()+"/xheditorUploadFile/immediate/1/",
+            upFlashExt:"swf",
+            upMediaUrl:$(".baseUrl").val()+"/xheditorUploadFile/immediate/1/"
+        });
+    }
+
+    /**
+     * 销售价计算器
+     */
+    function showCalculate(that){
+        var account = $('li[class="active"]' ).attr('account');
+        var sku = $(that ).attr('sku');
+        var platform = 'priceminister';
+        var url = "http://"+window.location.host+"/index.php?s=/SalePrice/salePriceCalculator/currency/EUR/sku/"+sku+"/platform/"+platform+"/account/"+account;
+        var index = layer.open({
+            type: 2,
+            title: '销售价计算器',
+            shift: '1',
+            offset: ['300px', '300px'],
+            closeBtn: 1,
+            shade:false,
+            scrollbar: false,
+            maxmin: true,
+            area: ['600px', '400px'],
+            content: url
+        })
+    }
+    //shelfDescription数量  最多5个
+    var bulletPointNum = [];
+    function addBulletPoint(seller, that) {
+        var flag = false;
+        for (var index in bulletPointNum) {
+            if (seller == index) {
+                flag = true;
+                break;
+            }
+        }
+        if (! flag) {
+            bulletPointNum[seller] = parseInt('{$bulletPointNum}');
+        }
+        if(bulletPointNum[seller] == 5) {
+            return;
+        }
+        bulletPointNum[seller] = bulletPointNum[seller] + 1;
+        var html = '<div><div style="clear:both"></div>';
+        html += '<div class="col-md-10"> ';
+        html += '<input type="text" attr_name="Bullet Point" isRequired="1" datatype="string" name="'+seller+'[Product][DescriptionData][BulletPoint][]" value="" class="mdn-input shelfDes" size="120" maxlength="128"/></div>';
+        html += '<div class="col-md-2"><button type="button" ' +
+        "onclick='delBulletPoint(\""+seller+"\", this)' " +
+        'class="btn btn-primary">-</button></div>';
+        html += '<div style="clear:both"></div></div>';
+        $(that ).closest('.descriptionDivs' ).append(html);
+    }
+    function delBulletPoint(seller, that) {
+        var flag = false;
+        for (var index in bulletPointNum) {
+            if (seller == index) {
+                flag = true;
+                break;
+            }
+        }
+        if (! flag) {
+            bulletPointNum[seller] = parseInt('{$bulletPointNum}');
+        }
+        if (bulletPointNum[seller] === 1) {
+            return;
+        }
+        bulletPointNum[seller] = bulletPointNum[seller] - 1;
+        $(that ).closest($(that ).parent().parent()).remove();
+    }
+
+    var searchTermsNum = [];
+    function addSearchTerms(seller, that) {
+        var flag = false;
+        for (var index in searchTermsNum) {
+            if (seller == index) {
+                flag = true;
+                break;
+            }
+        }
+        if (! flag) {
+            searchTermsNum[seller] = parseInt('{$searchTermsNum}');
+        }
+        if(searchTermsNum[seller] == 5) {
+            return;
+        }
+        searchTermsNum[seller] = searchTermsNum[seller] + 1;
+
+        var html = '<div><div style="clear:both"></div>';
+        html += '<div class="col-md-10"> ';
+        html += '<input type="text" attr_name="Search Terms" isRequired="1" datatype="string" name="'+seller+'[Product][DescriptionData][SearchTerms][]" value="" class="mdn-input shelfDes" size="120" maxlength="128"/></div>';
+        html += '<div class="col-md-2"><button type="button" ' +
+        "onclick='delSearchTerms(\""+seller+"\", this)' " +
+        'class="btn btn-primary">-</button></div>';
+        html += '<div style="clear:both"></div></div>';
+        $(that ).closest('.field-group' ).append(html);
+    }
+    function delSearchTerms(seller, that) {
+        var flag = false;
+        for (var index in searchTermsNum) {
+            if (seller == index) {
+                flag = true;
+                break;
+            }
+        }
+        if (! flag) {
+            searchTermsNum[seller] = parseInt('{$searchTermsNum}');
+        }
+        if (searchTermsNum[seller] === 1) {
+            return;
+        }
+        searchTermsNum[seller] = searchTermsNum[seller] - 1;
+        $(that ).closest($(that ).parent().parent()).remove();
+    }
+
+    //主图弹窗
+    function addimg_click(that) {
+        $(that ).attr('clickFlag', 'on');
+        $(that ).parent('td').css('border', '');
+        var addSku = $(that ).closest('tr' ).find('.variantSku').val();
+        var url;
+        if(addSku){
+            url = "{:U('getMainPicture')}/sku/"+addSku;
+        }else{
+            url = "{:U('getMainPicture')}/sku/{$maindata.primary}";
+        }
+        var title = '备选图片';
+        layer.open({
+            type: 2,
+            area: ['800px', '600px'],
+            fix: false, //不固定
+            shift: '1',
+            maxmin: true,
+            shade:0.4,
+            title: title,
+            content: url
+        });
+    }
+
+    // 主图绑定单击和双击事件
+    function mainPicAddOneAndTwoClick()
+    {
+        var timer = null;
+        $('.choosePicture' ).unbind('click');
+        $('.choosePicture' ).unbind('dblclick');
+        $('.choosePicture').on('click', function() { //单击事件
+            var that = this;
+            clearTimeout(timer);
+            timer = setTimeout(function() { //在单击事件中添加一个setTimeout()函数，设置单击事件触发的时间间隔
+                addimg_click(that);
+            }, 300);
+        })
+        $('.choosePicture').on('dblclick', function() { //双击事件
+            clearTimeout(timer);                //在双击事件中，先清除前面click事件的时间处理
+            clickUploadMainpic(this);
+        })
+    }
+
+    // 主图本地图片弹窗
+    function clickUploadMainpic(obj)
+    {
+        var file = $(obj).closest('td').find('input[type=file]');
+        $(file).click();
+    }
+
+    // 主图ajax异步请求
+    function mainPictureFileChange(that)
+    {
+        if($(that).val() != ''){
+            var id = $(that).prop('id' );
+            $.ajaxFileUpload({
+                url:"{:U('JoomItem/mainPictureUpload')}",
+                secureuri: false,
+                fileElementId:id,
+                dataType: 'json',
+                success: function(data) {
+                    if(data['code'] == 0) {
+                        var sku = $('#'+id).closest('tr' ).find('.variantSku :input').val();
+                        var elementName = $('#'+id).closest('td' ).find('button,img' ).attr('elementname');
+                        var pic = data['path'];
+                        var file_num = Math.floor(Math.random() * 90000) + 10000;
+                        if(sku != '') {
+                            var account = $('#'+id).closest('tbody' ).attr('account');
+                            var nameStr = elementName.replace(/sku-.*?\]/, 'sku-' + sku + ']');
+                            var pictureHtml = '<img elementName="' + elementName + '" src="' + pic + '" width="70" height="70" class="choosePicture"><input isRequired="1" datatype="string" type="hidden" name="' + nameStr + '" value="' + pic + '"><input id="file'+file_num+'" name="file'+file_num+'" onchange="mainPictureFileChange(this)" type="file" style="display:none;" value="" class="uploadMainPic">';
+                        } else {
+                            var pictureHtml = '<img elementName="' + elementName + '" src="' + pic + '" width="70" height="70" class="choosePicture"><input isRequired="1" datatype="string" type="hidden" name="' + elementName + '" value="' + pic + '"><input id="file'+file_num+'" name="file'+file_num+'" onchange="mainPictureFileChange(this)" type="file" style="display:none;" value="" class="uploadMainPic">';
+                        }
+                        $('#'+id).closest('td').html(pictureHtml);
+                        mainPicAddOneAndTwoClick();
+                    } else {
+                        layer.msg('图片上传失败！')
+                    }
+                }
+            });
+        }
+    }
+
+
+    //添加图片
+    function addMorePicture(that)
+    {
+        var account = $(that ).closest('fieldset').attr('account');
+        var variantSku = $(that ).closest('.field-group' ).attr('sku');
+        var pictureAccount = account+'[sku-'+variantSku+'][ProductImage][PT][]';
+        var len = $('input[name="'+pictureAccount+'"]').length;
+        if(len == 0){
+            $(that).parent().parent().css('height','170px');
+        }
+        var len = getRandomNum(1000000,9999999);
+        var pictureHtml = '<div style="float: left; position: relative;width: 100px;height: 120px; margin-right: 15px; "><img src="" width="100" height="100"><span class="rmPicture" style="display:block;width:20px;height:20px;top:0;right:0;z-index: 9999;position: absolute;text-align: center;font-size:16px;cursor: pointer;">×</span><span style="display: block;text-align: center;"><button type="button" onclick="clickUpload(this)" style="z-index:999;width:100px;">上传图片</button><input class="pictureInputs" type="hidden" name="' + pictureAccount + '" value="" size="150" maxlength="500"><input type="file" style="display:none;" id="titlePics_' + account + '_' + len + '" name="titlePics" value="" class="titlePics"></span></div>';
+
+        $(that).parent().parent().find('.jq22').append(pictureHtml);
+        //初始化拖拽插件
+        initDragsort($(that).parent().parent().find('.jq22'));
+    }
+
+    function clickUpload(obj){
+        var file = $(obj).parent().find('input[type=file]');
+        $(file).click();
+    }
+
+    //附图弹窗
+    function chooseExtraPicture(that)
+    {
+        $(that ).closest('.field-group' ).attr('extraChooseClick', 'on');
+        var sku = '{$maindata.primary}';
+        var variantno = $(that ).closest('.field-group' ).attr('variantno');
+        var account = $(that ).closest('fieldset' ).attr('account');
+        var url = "{:U('getExtraPictures')}/sku/"+sku+"/account/"+account;
+        var title = '备选图片';
+        layer.open({
+            type: 2,
+            area: ['800px', '600px'],
+            fix: false, //不固定
+            maxmin: true,
+            shade:0.4,
+            title: title,
+            content: url
+        });
+    }
+
+    var recommendedBrowseNodeClick = [];
+    function documentLoadInit(id)
+    {
+        $('.showToggle' ).unbind('click');
+        $('.showToggle').click(function(){
+            $(this).nextAll().toggle("slow");
+        });
+
+        $('td' ).unbind('focusin');
+        $(document).on('focusin', 'td', function(){
+            $(this).parent().css("background-color","#E9E9E4");
+        });
+
+        $('td' ).unbind('focusout');
+        $(document).on('focusout', 'td', function(){
+            $(this).parent().css("background-color","#fff");
+        });
+
+        //删除图片
+        $('.rmPicture' ).unbind('click');
+        $(document).on('click', '.rmPicture', function(){
+            var jq22 = $(this).parent().parent();
+            var len  = $(jq22).children('div').length;
+            if(len == 1){
+                $(this).parent().parent().parent().css('height','auto');
+            }
+            $(this).parent().remove();
+            return false;
+        });
+
+        $('.pictureInputs' ).unbind('focusout');
+        $(document).on('focusout', '.pictureInputs', function(){
+            //alert($(this).val());
+            $(this).prev('a').attr('href',$(this).val());
+            $(this).prev('a').children('img').attr('src',$(this).val());
+        });
+
+        // 橱窗图添加图片
+        $('.titlePics' ).unbind('change');
+        $(document).on('change','.titlePics', function(){
+            if($(this).val() != ''){
+                var id = $(this).prop('id');
+                var	account = $(this).closest('fieldset' ).attr('account');
+                var url = "__APP__/JoomItem/mainPictureUpload";
+                $.ajaxFileUpload({
+                    url: url,
+                    secureuri: false,
+                    fileElementId:id,
+                    dataType: 'json',
+                    success: function(data) {
+                        var url = data.path;
+                        if (data.code == 0) {
+                            $('#'+id).prev('input').val(url);
+                            $('#'+id).parent().parent().find('img').attr('src',url);
+                        } else {
+                            $('#'+id).prev('input').attr('value','');
+                            $('#'+id).prevAll('a').attr('href','');
+                            $('#'+id).prevAll('a').children('img').attr('src','');
+                            $('#'+id).prevAll('a').children('img').attr('title','failure');
+                            $('#'+id).prevAll('a').children('img').attr('alt','failure');
+                            layer.alert('图片上传失败,请稍后再试!');
+                        }
+                    }
+                });
+            }
+        });
+        addDefaultBrand(id);
+
+        /**
+         * 搜索RecommendedBrowseNode
+         */
+        $('.recommendedBrowseNodeKeyWords' ).unbind('keyup');
+        $('.recommendedBrowseNodeKeyWords').keyup(function(){
+            var val = $(this).val();
+            var accountList = {$accountList};
+            var account = $(this).attr('account');
+            var site = accountList[account].site;
+            if(val.length > 2 ){
+                var index = layer.load(1, {
+                    shade: [0.8,'#fff']
+                });
+                $.ajax({ url: '__URL__/searchRecommendedBrowseNode/',data:{'keyword':val, site:site},'type':'POST', success: function(data){
+                    $('.recommendedBrowseNodeContent ul').html(data).fadeIn('slow');
+                    $('.recommendedBrowseNodeContent ul' ).show();
+                    layer.close(index);
+                }});
+            }
+        });
+
+        /**
+         * 搜索recommendedBrowseNode结果选择
+         */
+        $('.recommendedBrowseNodeContent li' ).unbind('dblclick');
+        $('.recommendedBrowseNodeContent').delegate('li','dblclick',function(){
+            var that = this;
+            if (($(this).attr('us') === undefined)) {
+                recommendedBrowseNodeClick['er'] = this;
+            } else {
+                recommendedBrowseNodeClick['us'] = this;
+            }
+            var accountList = {$accountList};
+            $('.recommendedBrowseNode').each(function () {
+                var account = $(this).find('.recommendedBrowseNodeKeyWords').attr('account');
+                var site = accountList[account].site;
+                if (($(that).attr('us') === undefined && site === 'us') || ($(that).attr('us') !== undefined && site !== 'us')) {
+                    return true;
+                }
+                $('.recommendedBrowseNodeContent ul').hide();
+                var recommendedBrowseNode = $(that).attr(site);
+                var content = recommendedBrowseNode + ':' + $(that).text();
+                $(this).find('.recommendedBrowseNodeKeyWords').val(content);
+                $(this).find('.recommendedBrowseNodeKeyWords').attr('recommendedBrowseNode', recommendedBrowseNode);
+                $(this).find('.recommendedBrowseNodeInput').val(recommendedBrowseNode);
+            })
+        });
+    }
+
+    // 给brand属性添加默认值
+    function addDefaultBrand(id)
+    {
+        var accountList = {$accountList};
+        var account = id.substr(7);
+        for (var index in accountList) {
+            if (account === index) {
+                var brand = accountList[index]['brand']
+                $('#' + id).find('[attr_name="Brand"]').val(brand)
+                break;
+            }
+        }
+    }
+
+    // variantdata与一般的属性不一样，需额外处理
+    //定义一个数组保存HTML信息
+    var variantNode = [];
+    function dealVariantDataNode(id)
+    {
+        var flag = 1;
+        var obj = $('#' + id).find('[attributename="VariationData"]');
+        if (obj.length == 0) {
+            obj = $('#' + id).find('[attributename="VariationTheme"]');
+            var tmpObj = obj;
+            flag = 2;
+
+        }
+        var themeNode = obj.find('[data-placeholder="VariationTheme"]');
+        if (themeNode.length == 0) {
+            return false;
+        }
+        var html = themeNode.prop('outerHTML');
+        if (tmpObj !== undefined) {
+            tmpObj.remove();
+        }
+        html = html.replace(/style="display: none;"/g, '');
+        $('#' + id).find('.variantLeg').html(html);
+        var selectObj = $('#' + id).find('.variantLeg select');
+        selectObj.chosen({search_contains: true, width: '100%', allow_single_deselect: true});
+        // 把多属性特有属性保存
+        if (variantNode.length === 0) {
+            if (flag === 1) {
+                themeNode.closest('.titlesDiv').find('select,input').each(function () {
+                    var nodeName = $(this).attr('node_name');
+                    if (nodeName === undefined || nodeName == null || nodeName === 'VariationTheme') {
+                        return true;
+                    } else if (nodeName === 'Parentage') {
+                        parentageObj = this;
+                    }
+                    variantNode[nodeName] = $(this).prop('outerHTML');
+                })
+            } else {
+                var parentageObj = $('[node_name="Parentage"]').first();
+            }
+            var name = $(parentageObj).prop('name');
+            $('.hiddenInfo').each(function() {
+                var account = $(this).attr('account');
+                var html = '<input name="'+name.replace(/.*?\[/, account + '[')+'" value="1" type="hidden">'
+                $(this).append(html)
+            })
+            $('[node_name="Parentage"]').closest('.titlesDiv').remove();
+        } else {
+            themeNode.closest('.titlesDiv').remove();
+        }
+    }
+
+    // 给varianttheme绑定change事件
+    // 用于保存变体HTML信息
+    var variantHtml = [];
+    function chooseVarianttheme(id)
+    {
+        $('#' + id).find('[node_name="VariationTheme"]').bind('change', function() {
+            // 选择多属性主题重置variantHtml
+            variantHtml = [];
+            var account = $(this).parent().attr('account');
+            var theme = $(this).val();
+            $('[node_name="VariationTheme"]').val(theme);
+            $('[node_name="VariationTheme"]').trigger("chosen:updated");
+            var themes = [];
+            if (theme === 'SizeColor' || theme === 'ColorSize') {
+                themes.push('Size');
+                themes.push('Color');
+            } else {
+                themes = theme.split('-');
+            }
+            $(this).closest('fieldset').find('[flag="variantAttr"]').each(function() {
+                var node_name = $(this).attr('node_name');
+                if (in_array(node_name, variantNode)) {
+                    return true;
+                }
+                $('[node_name="'+node_name+'"]').show();
+                $('[node_name="'+node_name+'"]').prop('disabled', false);
+            });
+            $('[flag="variantAttr"]').remove();
+            var searchThemes = [];
+            for (var index in themes) {
+                if (in_array(themes[index], variantNode)) {
+                    var html = variantNode[themes[index]];
+                    addVariantAttrToTab(themes[index], html, account);
+                } else {
+                    searchThemes.push(themes[index]);
+                }
+            }
+            $('#nowshow' + account).find('.categoryAttribute').find('select,input').each(function() {
+                for (var index in searchThemes) {
+                    var nodeName = $(this).attr('node_name');
+                    if (nodeName == null) {
+                        break;
+                    }
+                    if(nodeName.toLowerCase() === searchThemes[index].toLowerCase()) {
+                        var html = $(this).prop('outerHTML');
+                        $('[node_name="'+nodeName+'"]').prop('disabled', true);
+                        $('[node_name="'+nodeName+'"]').hide();
+                        addVariantAttrToTab(nodeName, html, account, 1);
+                    } else if (nodeName.toLowerCase() === (searchThemes[index] + 'Name').toLowerCase()) {
+                        var html = $(this).prop('outerHTML');
+                        $('[node_name="'+nodeName+'"]').prop('disabled', true);
+                        $('[node_name="'+nodeName+'"]').hide();
+                        addVariantAttrToTab(nodeName, html, account, 0);
+                    }
+                }
+
+            })
+
+            addSwitchImageToTab();
+            mainPicAddOneAndTwoClick();
+            $('.variantTable .variantSku :input').each(function() {
+                autoCompleteName(this)
+            })
+        })
+    }
+
+    // 添加变体属性到表格中
+    function addVariantAttrToTab(nodeName, html, account, flag)
+    {
+        html = '<td flag="variantAttr">' + html + '</td>'
+        if (variantHtml[nodeName] === undefined) {
+            variantHtml[nodeName] = html;
+        } else if (flag === 1) {
+            variantHtml[nodeName] = html;
+        }
+        var variantInputTitleObj = $('.addVariantTitle');
+        var displayNodeName = nodeName.replace(/([A-Z])/g, " $1");
+        variantInputTitleObj.before('<th flag="variantAttr">' + displayNodeName + '</th>')
+        var variantInputObj = $('.addVariantInput');
+        variantInputObj.each(function() {
+            var account = $(this).attr('account');
+            $(this).before(html);
+            var variantSelectObj = $(this).prev().find('select,input');
+            variantSelectObj.show();
+            variantSelectObj.prop('disabled', false);
+            variantSelectObj.css('width', '80px');
+            variantSelectObj.prop('name', variantSelectObj.prop('name').replace(/.*?\[/, account + '[sku-]['));
+        })
+//        $('.variantTable select[node_name="'+nodeName+'"]').each(function() {
+//            console.log($(this)[0])
+////            var display = $(this).css('display');
+////            $(this).show();
+////            $(this).chosen();
+////            $(this).css('display', display);
+//        })
+        $('#nowshow' + account).find('.variantTable select[node_name="'+nodeName+'"]').chosen();
+    }
+
+    function replaceAccountBuildChosen(id)
+    {
+        $('#' + id).find('select').chosen();
+    }
+
+    // 计算数组长度
+    function arrLength(arr)
+    {
+        if (! (arr instanceof Array)) {
+            return false;
+        }
+        var count = 0;
+        for (var index in arr) {
+            count++;
+        }
+        return count;
+    }
+
+    // 添加switchImage输入控件到表格中
+    function addSwitchImageToTab()
+    {
+        var accounts = [];
+        $('.accountCheckbox').each(function() {
+            if ($(this).prop('checked') == true) {
+                accounts.push($(this).val());
+            }
+        })
+        $('.addVariantTitle' ).before('<th flag="variantAttr">Swatch Image</th>');
+        var swatchImageUrlHtml = '<td flag="variantAttr"><input type="hidden" attr_name="swatchImage" name="AAaccountAA[swatchImage][]" value="" isRequired="1"><button elementName="AAaccountAA[ProductImage][Swatch]" type="button" class="layui-btn layui-btn-primary choosePicture">添加图片</button>';
+        swatchImageUrlHtml += '<input id="file%$file_num%" name="file%$file_num%" onchange="mainPictureFileChange(this)" type="file" style="display:none;" value="" class="uploadMainPic"></td>';
+        if (variantHtml['switch'] === undefined) {
+            variantHtml['switch'] = swatchImageUrlHtml;
+        }
+        $.each(accounts, function(i, account) {
+            var file_num = getRandomNum(100000, 999999);
+            $('#nowshow'+account ).find('.addVariantInput' ).before(swatchImageUrlHtml.replace(/AAaccountAA/g, account + '[sku-]').replace(/%\$file_num%/g, file_num));
+        });
+    }
+
+    //生成变体输入表格
+    function createVariantTable(account, that)
+    {
+        if(! arrLength(variantHtml)) {
+            layer.msg('请先设置多属性主题');
+            return;
+        }
+        var variantNum = parseInt($(that ).attr('variantNum')) + 1;
+        $(that ).attr('variantNum', variantNum)
+        var skuOptions = '';
+        var sonSkus = eval('{$sonSkusEn}');
+        for(var index in sonSkus) {
+            skuOptions += '<option name="' + sonSkus[index] + '">' + sonSkus[index] +'</option>';
+        }
+        var file_num = getRandomNum(100000, 999999);
+        var html = '<tr><td class="variantSku"><select variantNo="'+variantNum+'" attr_name="sku" isRequired="1" datatype="string" onchange="autoCompleteName(this)" style="width: 90%" name="'+account+'[sku][]"><option value=""></option>' + skuOptions + '</select></td>';
+        html += '<td><input type="hidden" attr_name="main image" name="'+account+'[mainPic]" value="" isRequired="1"><button elementName="'+account+'[sku-][ProductImage][Main]" type="button" class="layui-btn layui-btn-primary choosePicture">添加图片</button>'
+        html += '<input id="file'+file_num+'" name="file'+file_num+'" onchange="mainPictureFileChange(this)" type="file" style="display:none;" value="" class="uploadMainPic"></td>';
+        file_num = getRandomNum(100000, 999999);
+        var variantAttrHtml = '';
+        for (var index in variantHtml) {
+            variantAttrHtml += variantHtml[index];
+        }
+//        html += variantAttrHtml
+        html += variantAttrHtml.replace(/AAaccountAA/g, account + '[sku-]').replace(/\sname=".*?\[/g, ' name="' + account + '[sku-][').replace(/%\$file_num%/g, file_num);
+        html += '<td class="addVariantInput"><input attr_name="StandardPrice" isRequired="1" datatype="float" name="'+account+'[sku-][Price][StandardPrice]" type="text"/></td>';
+        html += '<td><input attr_name="SalePrice" datatype="float" name="'+account+'[sku-][Price][SalePrice]" type="text"/></td>';
+        html += '<td><input attr_name="inventory" isRequired="1" datatype="int" name="'+account+'[sku-][Inventory][FulfillmentCenterID][Quantity]" type="text"/></td>';
+//        html += '<td><input attr_name="UPC" isRequired="1" datatype="int" name="'+account+'[sku-][MPItem][Product][productIdentifiers][productIdentifier][productId]" type="text"/></td>';
+        html += '<td><button type="button" onclick="delVariants(this)" class="layui-btn layui-btn-danger">删除</button></td></tr>';
+        var addObj = $(html)
+        $('#nowshow'+account ).find('.variantTable tbody' ).append(addObj);
+        var variantInputObj = addObj.find('[flag="variantAttr"]').find('select,:text');
+        variantInputObj.css('width', '80px');
+        variantInputObj.show();
+        variantInputObj.prop('disabled', false);
+        addObj.find('select').chosen();
+        mainPicAddOneAndTwoClick();
+        addExtraDiv(variantNum, that);
+    }
+
+    //选择sku自动补全相应行input的name
+    function autoCompleteName(that)
+    {
+        var account = $(that ).closest('tbody' ).attr('account');
+        var sku = $(that ).val();
+        if(sku == '') {
+            return;
+        }
+        $(that ).closest('tr' ).find(':input' ).each(function() {
+            $(this ).prop('name', $(this ).prop('name' ).replace(/sku-.*?\]/, 'sku-' + sku + ']'));
+        })
+        $(that ).closest('tr' ).find('button' ).each(function() {
+            var prev_elementName = $(this ).attr('elementName');
+            if(prev_elementName == undefined) {
+                return true;
+            }
+            $(this ).attr('elementName', prev_elementName.replace(/sku-.*?\]/, 'sku-' + sku + ']'));
+        })
+        var goods_type = '{goods_type}';
+        var price = '{$maindata.goods_price}';
+        if( goods_type == 1) {
+            var sonSkuData = eval('{$sonSkuData}');
+            price = sonSkuData[sku];
+        }
+        // 默认价格
+        $(that ).closest('tr' ).find('[attr_name="price"]' ).val(price);
+        var variantno = $(that ).attr('variantno');
+        var extra_image_div = $(that ).closest('fieldset' ).next().find('[variantno="'+variantno+'"]');
+        extra_image_div.find('.extraImageSkuSpan' ).html(sku);
+        extra_image_div.attr('sku', sku);
+        var pic_name = account + '[sku-' + sku + '][ProductImage][PT][]';
+        extra_image_div.find('.pictureInputs' ).prop('name', pic_name)
+    }
+
+    // 删除当前多属性
+    function delVariants(that)
+    {
+        var variantno = $(that ).closest('tr' ).find(' .variantSku select').attr('variantno');
+        $(that ).closest('fieldset').next().find('.field-group[variantno="'+variantno+'"]' ).remove();
+        $(that ).closest('tr' ).remove();
+    }
+
+    // 判断数组索引是否存在
+    function in_array(index, arr)
+    {
+        for (var i in arr) {
+            if (index == i) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // 导入upc
+    function addUPC(from)
+    {
+        var url = '__URL__/addUPC/from/' + from;
+        layer.open({
+            type: 2,
+            title: '编辑商品信息',
+            shift: '1',
+            closeBtn: 1,
+            scrollbar: false,
+            maxmin: true,
+            area: ['600', '400'],
+            content: url
+        });
+    }
+
+    function autoCompleteUnitIsRequire(that, $attrType)
+    {
+        var isRequireValue = 0;
+        if($(that).val()) {
+            var isRequireValue = 1;
+        }
+        if($attrType == 'masure') {
+            $(this ).closest('td' ).next().find(':input' ).attr('isRequired', isRequireValue);
+        } else {
+            $(this ).closest('td' ).prev().find(':input' ).attr('isRequired', isRequireValue);
+        }
+    }
+
+    function addExtraDiv(variantNo, that)
+    {
+        var html = '<div class="field-group" variantno="' + variantNo + '"  sku="">';
+        html += '<div class="pictureDivs"  style="height:auto;">';
+        html += '<div class="floatL"><span class="extraImageSkuSpan"></span>&nbsp;&nbsp;&nbsp;<button type="button" onclick="chooseExtraPicture(this)" class="chooseExtraPicture">Choose Pictures</button>&nbsp;&nbsp;&nbsp;<button type="button" onclick="addMorePicture(this)" class="addMorePicture">Add More Picture</button></div>'
+        html += '<button type="button" class="showToggle floatR">show / hide</button>';
+        html += '<div class="clearFloat"></div>';
+        html += '<div class="jq22"></div>';
+        html += '<div class="clearFloat"></div></div></div>';
+        $(that ).closest('fieldset' ).next().append(html);
+    }
+
+    function saveData(that, uploadType)
+    {
+        $('[name="uploadType"]' ).val(uploadType);
+        $('.submit').prop('disabled', true);
+        var isBeyondWord = countTheNumberOfWords();
+        if(isBeyondWord) {
+            $('.submit').prop('disabled', false);
+            return;
+        }
+
+        // 判断多属性产品是否设置了多属性
+        var goods_type = '{$goods_type}';
+        if(goods_type == 1 && arrLength(variantHtml) == 0) {
+            layer.msg('多属性产品未设置多属性');
+            $('.submit').prop('disabled', false);
+            return;
+        }
+
+        var tabId = [];
+        $('.accountCheckbox' ).each(function() {
+            if($(this ).prop('checked') == true) {
+                tabId.push('#nowshow' + $(this ).val());
+            }
+        })
+        tabId = tabId.join(',');
+        var isOk = true;
+        $(tabId ).find(':text,select,textarea,:hidden' ).each(function() {
+            var value = $.trim($(this ).val());
+            var isRequired = $(this ).attr('isRequired');
+            if(value === '' || value === undefined) {
+                var isRequired = $(this ).attr('isRequired');
+                if(isRequired == 1) {
+                    var xmlNodeRequired = $(this).closest('td.titlesDiv').attr('xmlNodeRequired');
+                    if (xmlNodeRequired == 2) {
+                        return true;
+                    }
+                    var name = $(this).prop('name');
+                    if (name.indexOf('_attribute') === -1) {
+                        layer.msg(getSubmitDisplayErrorInfo(this, '信息为空'));
+                        isOk = false;
+                        return;
+                    }
+                }
+            } else {
+                var datatype = $(this ).attr('datatype');
+                if(datatype === 'int' || datatype === 'xsd:integer' || datatype === 'xsd:nonNegativeInteger' || datatype === 'xsd:positiveInteger' ) {
+                    if(parseInt(value) != value) {
+                        layer.msg(getSubmitDisplayErrorInfo(this, '不是整数类型'));
+                        isOk = false;
+                        return;
+                    }
+                } else if(datatype === 'float' || datatype === 'xsd:decimal') {
+                    var pattern = /^\d+(\.\d+)?$/;
+                    if(value.match(pattern) == null) {
+                        layer.msg(getSubmitDisplayErrorInfo(this, '不是小数类型'));
+                        isOk = false;
+                        return;
+                    }
+                }
+            }
+        })
+        if(!isOk) {
+            $('.submit').prop('disabled', false);
+            return;
+        }
+        var formAction = $(that).val();
+        var queryString = $('#itemForm').serialize();
+        layer.closeAll();
+        var index = layer.load(1,{shade: 0.5});
+        $.ajax({
+            url:formAction,
+            type:'post',
+            data:queryString,
+            dataType: 'json',
+            success:function(data){
+                if(data['code'] == 0) {
+                    $('.submit').prop('disabled', false);
+                    layer.msg(data['msg']);
+                } else {
+                    layer.msg('保存成功！');
+                    setTimeout(function() {
+                        parent.location.reload();
+                        parent.layer.closeAll();
+                    }, 2000);
+                }
+            }
+        } ).always(function() {
+            $('.submit').prop('disabled', false);
+            layer.close(index);
+        });
+    }
+
+    function countTheNumberOfWords()
+    {
+        var isOk = true;
+        $('[attr_name="title"]' ).each(function() {
+            var len = $(this ).val().length;
+            var account = $(this).attr('account');
+            if(len >= 500&&$(".accountCheckbox[value="+account+"]")[0].checked) {
+                layer.msg(account + '下的标题大于500字符！');
+                isOk = false;
+                return;
+            }
+        });
+        if(! isOk) {
+            return true;
+        }
+        $('[attr_name="Description"]' ).each(function() {
+            var len = $(this ).val().length;
+            var account = $(this).attr('account');
+            if(len >= 2000&&$(".accountCheckbox[value="+account+"]")[0].checked) {
+                
+                layer.msg(account + '下的Description字符数为'+len+',大于2000！');
+                isOk = false;
+                return;
+            }
+        });
+        if(! isOk) {
+            return true;
+        }
+        $('.bulletPointDivs' ).each(function() {
+            var len = 0;
+            $('[attr_name="Bullet Point"]' ).each(function() {
+                len = $(this ).val().length;
+                var account = $(this).closest('.field-group').attr('account');
+                if(len >= 500&&$(".accountCheckbox[value="+account+"]")[0].checked) {
+                    layer.msg(account + '下的Bullet Point不能大于500字符！');
+                    isOk = false;
+                    return;
+                }
+            });
+        });
+
+        $('.searchTermsDivs' ).each(function() {
+            var len = 0;
+            $('[attr_name="Search Terms"]').each(function() {
+                len = $(this ).val().length;
+                var account = $(this).closest('.field-group').attr('account');
+                if(len >= 200&&$(".accountCheckbox[value="+account+"]")[0].checked) {
+                    
+                    layer.msg(account + '下的Search Terms不能大于200字符！');
+                    isOk = false;
+                    return;
+                }
+            });
+        });
+
+        if(! isOk) {
+            return true;
+        }
+        return false;
+    }
+
+    
+    function getSubmitDisplayErrorInfo(that, extraInfo)
+    {
+        var name = $.trim($(that ).prop('name'));
+        var pattern = /^[^\[\s]*/;
+        var account = name.match(pattern)[0];
+        pattern = /\[[^\]]*\]/g;
+        var that_attr_name = $(that ).attr('attr_name');
+        var errorInfo = '账户: ' + account + '下的';
+        if(that_attr_name === '' || that_attr_name === undefined) {
+            that_attr_name = '';
+            var attr_name = name.match(pattern);
+            for(var index = 0 in attr_name) {
+                var tmp_attr_name = attr_name[index].substr(1, attr_name[index ].length - 2);
+                if(tmp_attr_name == 'sku-' || tmp_attr_name == 'MPItem' || tmp_attr_name == 'Product') {
+                    continue;
+                } else {
+                    that_attr_name += tmp_attr_name + ' ';
+                }
+            }
+        }
+        errorInfo += that_attr_name + extraInfo;
+        return errorInfo;
+    }
+
+    function loadPane(account)
+    {
+        if ($('#nowshow' + account).attr('isLoad') !== 'load') {
+            var tabPaneHtml = {$tabPaneHtml}[0];
+            var lang_data={$lang_data};
+            tabPaneHtml = tabPaneHtml.replace(/AAaccountAA/g, account);
+            var pbtmp=$("#bp_temp").html().replace(/AAaccountAA/g, account);
+            var lang_key=account.split("_").pop().toLowerCase();
+            var lang_val=lang_data[lang_key];
+            var bulletPoint=lang_data['default']['bulletPoint'];
+            if(!lang_val||!lang_val['description']){
+            	lang_val=lang_data['default'];
+            }
+            if(lang_val){
+            	tabPaneHtml=tabPaneHtml.replace('LANG{title}',lang_val['title']?lang_val['title']:'');
+            	tabPaneHtml=tabPaneHtml.replace('LANG{description}',lang_val['description']?lang_val['description']:'');
+            	
+            	if(lang_val.bulletPoint&&lang_val.bulletPoint.length){
+            		bulletPoint=lang_val.bulletPoint;
+            	}
+            	var pb_ds='';
+            	if(bulletPoint)
+        		for(var bpi=0;bpi<bulletPoint.length;bpi++){
+        			var pbv=bulletPoint[bpi].trim().substr(0,499);
+        			pb_ds+='<div>'+pbtmp.replace("LANG{BP}",pbv)+'<div>';
+        		}
+        		if(pb_ds==''){
+        			pb_ds='<div>'+pbtmp.replace("LANG{BP}",'')+'<div>';
+        		}
+            }
+            tabPaneHtml = tabPaneHtml.replace("LANG{bulletPoint}",pb_ds);
+            $('#nowshow' + account).attr('isLoad', 'load');
+            $('#nowshow' + account).append(tabPaneHtml);
+            chosenRebuild('nowshow' + account);
+            pageInit();
+            mainPicAddOneAndTwoClick();
+            documentLoadInit('nowshow' + account);
+            var goods_type = '{$goods_type}';
+            dealVariantDataNode('nowshow' + account);
+            if(goods_type == 1) {
+                chooseVarianttheme('nowshow' + account);
+            } else {
+                $('.variantLeg').remove();
+                autoCompleteName($('.variantSku :input'));
+            }
+        }
+    }
+
+
+</script>
+<link href="__PUBLIC__/chosen_v1.6.2/chosen.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" src="__PUBLIC__/chosen_v1.6.2/chosen.jquery.js"></script>
+<script>
+    $(document).ready(function(){
+        var sku = $('#sku' ).val();
+        // 分类ID获取子分类
+        $(document).on('click', '.categoryClass option', function(){
+            var checkedOption	= $(this).parent();
+            var checkedValue	= $(this).val();
+            var checkedName     = $(this ).text();
+            checkedOption.parent().parent().nextAll().remove();
+            //存在子分类,获取子分类
+            if($(this).attr('title') == 'show leaf'){
+                var psotAction = $('.baseUrl').val() + "/getCategories/categoryParentID/"+checkedValue;
+                $.ajax({
+                    url:psotAction,
+                    type:'get',
+                    async: false,
+                    beforeSend:function(XMLHttpRequest){
+                        $("#myShow").css({display:"",top:"50%",left:"50%",position:"absolute"});
+                    },
+                    error:function(msg){
+                        layer.alert(msg);
+                    },
+                    success:function(msg){
+                        $("#myShow").hide();
+                        var htmlStr = '<div class="col col-3"><div class="field-group mdn-select-multiple categoryDiv" >';
+                        htmlStr += '<select size="13" class="categoryClass">'+msg+'</select>';
+                        htmlStr += '</div></div>';
+                        checkedOption.parent().parent().after(htmlStr);
+                    }
+                });
+            } else {
+                //没有子分类,获取产品属性
+                if($('input[name="categoryID"]').val() == checkedValue){
+                    $('.categoryDiv').hide();
+                    return false;
+                }
+                var url = '__SELF__&sku=<?php echo $sku;?>&cateid='+checkedValue+'&categoryID='+checkedName
+                window.location.href = url;
+            }
+        });
+
+        // 分类搜索
+        $('#categoryIdInput').click(function(){
+            var url = "__URL__/getCategoryByKeyword";
+            var title = '关键字匹配类目';
+            layer.open({
+                type: 2,
+                area: ['800px', '600px'],
+                fix: false, //不固定
+                maxmin: true,
+                shade:0.4,
+                title: title,
+                content: url
+            });
+        })
+
+        $('.showCategoryDiv').click(function(){
+            $('.categoryDiv').show();
+        });
+
+
+        $('input[name="selectAllCount"]').click(function(){
+            if ($(this).prop('checked') == true) {
+                $('.accountCheckbox').prop('checked',true);
+                $("li[name=sellerchange]").show();
+                $("#myTab li").removeClass("active");
+            } else {
+                $('.accountCheckbox').prop('checked',false);
+                $("#myTab li").removeClass("active");
+                $("li[name=sellerchange]").hide();
+                $("li[name=sellerchange]").removeClass("active");
+                $(".fadetab-seller").hide();
+            }
+        });
+        $('input[name="accountList[]"]').click(function(){
+            var clickAccount = $(this).val();
+            if ($(this).prop('checked') == true) {
+                $("#myTab"+clickAccount).show();
+                $("#myTab li").removeClass("active");
+                loadPane(clickAccount);
+            } else {
+                $("#myTab li").removeClass("active");
+                $("#myTab"+clickAccount).hide();
+                $("#myTab"+clickAccount).removeClass("active");
+                $(".fadetab-seller").hide();
+            }
+            $('.titleListTable'+clickAccount).show();
+        });
+
+        //选择账号后可以显示出所有需要填写的商品信息
+        $("li[name = sellerchange]").click(function(){
+            $('.fadetab-pane' ).hide();
+            var id = $(this ).attr('anchorPoint');
+            $('#' + id ).show();
+            replaceAccountBuildChosen(id)
+        });
+
+        //含有子属性的属性
+        $(document ).on('change','.attrbutes',function() {
+            $(this).find('option').each(function() {
+                if($(this).attr('selected') == 'selected') {
+                    var isleaf = $(this).attr('isleaf');
+                    if(isleaf == '0') {
+                        layer.alert("此属性含有子属性，请选择子属性");
+                        $(this ).attr('selected',false);
+                    }
+                }
+            });
+        });
+
+        $('.fadetab-seller' ).hide();
+    });
+</script>

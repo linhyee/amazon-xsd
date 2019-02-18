@@ -1,0 +1,65 @@
+<literal>
+    <link rel="stylesheet" href="__PUBLIC__/css/modernforms.css">
+    <link rel="stylesheet" href="__PUBLIC__/css/font-awesome.min.css">
+    <link rel="stylesheet" href="__PUBLIC__/css/table.css" >
+    <link rel="stylesheet" href="__PUBLIC__/express-css-table-design/style.css" >
+    <script type="text/javascript" src="__PUBLIC__/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/layer/2.1/layer.js"></script>
+    <style>
+        /*.modern-forms .mdn-select-multiple select {height: 250px; background:#ebf0ef;overflow:scroll;}*/
+    </style>
+</literal>
+<div class="modern-forms">
+    <div class="modern-container" style="margin-left: 10px;padding: 0 20px; max-width: 90%;margin-top: 10px;">
+        <fieldset>
+            <legend>输入类目关键字</legend>
+            <div class="form-row">
+                <div class="col col-12">
+                    <div class="field-group">
+                        <input type="text" class="mdn-input" id="keyword" name="keyword"  value=""  placeholder="Category Key Word">
+                        <label class="mdn-label">Key Word</label>
+                        <span class="mdn-bar"></span>
+                    </div>
+                </div>
+            </div><!-- end form-row -->
+        </fieldset>
+        <!--<div class="mdn-footer">-->
+            <!--<button type="button" id="submitKeyword" class="mdn-button btn-primary submit"  >Submit</button>-->
+        <!--</div>-->
+        <div id="contentTable" style="width: 100%;">
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function(){
+        $('#keyword').on('keyup',function(){
+            var keyword = $.trim($('#keyword').val());
+            if(keyword == ''){return false;}
+            if(keyword.match(/\s$/)||$.trim(keyword).length<2){ return false;}
+            var index = layer.load();
+            $.ajax({
+                type: "POST",
+                url: "__URL__/getCategoryTableByKeyword",
+                data: "keyword="+keyword,
+                success: function(msg){
+                    layer.close(index);
+                    if(msg != ''){
+                        $('#contentTable').html(msg);return false;
+                    }
+                }
+            });
+        });
+    });
+
+    function closeLayer(that){
+        var categoryId = $(that).val();
+        var categoryName = $(that ).attr('categoryName');
+        if(categoryId != ''){
+            parent.document.getElementById("categoryIdInput").value = categoryName;
+            parent.document.getElementById("cateid").value = categoryId;
+            parent.refreshCategoryReloadPage(categoryName, categoryId);
+            parent.layer.closeAll();
+        }
+    }
+</script>

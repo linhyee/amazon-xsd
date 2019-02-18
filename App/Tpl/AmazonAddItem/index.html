@@ -1,0 +1,606 @@
+<layout name="fzclayout"/>
+
+<script src="/Public/NewTpl/js/jquery-2.1.1.js"></script>
+<link href="/Public/NewTpl/css/bootstrap.min.css-v=3.3.5.css" rel="stylesheet">
+<link href="/Public/NewTpl/font-awesome/css/font-awesome.css" rel="stylesheet">
+
+<link href="/Public/NewTpl/css/animate.css" rel="stylesheet">
+<link href="/Public/NewTpl/css/style.css" rel="stylesheet">
+
+<link href="/Public/NewTpl/css/custom.css" rel="stylesheet">
+
+<link rel="shortcut icon" href="/newerp/img/favicon.ico" />
+<div id="wrapper">
+
+    <div style="width:100%">
+        <div class="row">
+            <div class="col-sm-12">
+                <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom:0;min-height:30px;">
+                    <ul class="nav navbar-top-links navbar-left" style="margin:0px;">
+                        <link href="/Public/NewTpl/css/plugins/chosen_v1.6.2/chosen.css" rel="stylesheet">
+                        <script type="text/javascript" src="/Public/NewTpl/css/plugins/chosen_v1.6.2/chosen.jquery.min.js"></script>
+                        <script src="/Public/NewTpl/js/plugins/layer/laydate/laydate.js"></script>
+                        <style>
+                            .limitNote p {
+                                height: 20px;
+                                overflow: hidden;
+                                cursor: pointer;
+                            }
+
+                            .limitNote:hover p {
+                                height: auto;
+                                overflow: auto;
+                                cursor: pointer;
+                            }
+
+                            .search-bar > div > li {
+                                width: 120px;
+                                float: left;
+                                margin: 5px;
+                                display: block;
+                                height: 30px;
+                            }
+                        </style>
+                        <li>
+                            <a class="m-r-xs text-muted welcome-message"><span class="glyphicon glyphicon-home"></span>&nbsp;&nbsp;当前位置：</a>
+                        </li>
+                        <li>
+                            <a class="">Walmart管理</a>
+                        </li>
+                        /
+                        <li>
+                            <a class="">Walmart刊登</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+        <!-- 头部导航-结束 -->
+
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-content">
+                        <form id="submit" action="__ACTION__" style="margin: 0 auto">
+                            <div style="border:1px dashed #d0d0d0;padding: 10px 10px;" class="search-bar">
+                                <div style="width:100%">
+                                    <li>
+                                        <input name="keyWord" value="{$keyWord}" type="text" class="form-control" placeholder="搜索关键字">
+                                    </li>
+                                    <li>
+                                        <select name="searchType">
+                                            <option value="1" <if condition="$searchType == 1">selected="selected"</if>>关键字</option>
+                                            <option value="2" <if condition="$searchType == 2">selected="selected"</if>>sku</option>
+                                        </select>
+                                    </li>
+                                    <li>
+                                        <select data-placeholder="开发人员" name="kfuser">
+                                            <option value=""></option>
+                                            <php>foreach($developList as $value){</php>
+                                            <option value="{$value}"
+                                            <?php if($kfuser == $value){ echo "selected";} ?>
+                                            >{$value}</option>
+                                            <php>}</php>
+                                        </select>
+                                    </li>
+
+                                    <li>
+                                        <select data-placeholder="销售人员" name="sale_user">
+                                            <option value=""></option>
+                                            <php>foreach($saleList as $value){</php>
+                                            <option value="{$value}"
+                                            <?php if($sale_user == $value){ echo "selected";} ?>
+                                            >{$value}</option>
+                                            <php>}</php>
+                                        </select>
+                                    </li>
+                                    <li>
+                                        <select name="type" data-placeholder="产品类型">
+                                            <option value=""></option>
+                                            <option value="0" <php>if($type === '0')echo 'selected="selected"';</php>>普通商品</option>
+                                            <option value="1" <php>if($type == '1')echo 'selected="selected"';</php>>多属性商品</option>
+                                        </select>
+                                    </li>
+                                    <li>
+                                        <select name="categoryPid" data-placeholder="产品分类">
+                                            <option value=""></option>
+                                            <php>foreach($stockCategories as $key=>$v){</php>
+                                            <option value="{$key}" <php>if($categoryPid == $key){echo "selected";}</php>>{$v}</option>
+                                            <php>}</php>
+                                        </select>
+                                    </li>
+                                    <notempty name="categoryListLevel2">
+                                        <li>
+                                            <select name="category" data-placeholder="产品分类">
+                                                <option value=""></option>
+                                                <volist name="categoryListLevel2" id="vo">
+                                                    <option value="{$vo.id}"
+                                                    <php>if($category == $vo['id']){echo "selected";}</php>
+                                                    >{$vo.name}</option>
+                                                </volist>
+                                            </select>
+                                        </li>
+                                        <script>$(function(){
+                                            $('select[name=category]').chosen({search_contains: true, width: '100%', allow_single_deselect: true});
+                                        })</script>
+                                    </notempty>
+                                    <li>
+                                        <a onclick='searchs(this)' id="searchForm" class="btn btn-primary btn-block">点击搜索&nbsp;<i class="glyphicon glyphicon-search"></i></a>
+                                    </li>
+
+                                    <li style="float:right;">
+                                        <select name="page_size" onchange="changePagesize(this)">
+                                            <option value="25"
+                                            <if condition="$page_size eq 25">selected="selected"</if>
+                                            >25条/页</option>
+                                            <option value="50"
+                                            <if condition="$page_size eq 50">selected="selected"</if>
+                                            >50条/页</option>
+                                            <option value="100"
+                                            <if condition="$page_size eq 100">selected="selected"</if>
+                                            >100条/页</option>
+                                            <option value="200"
+                                            <if condition="$page_size eq 200">selected="selected"</if>
+                                            >200条/页</option>
+                                        </select>
+                                    </li>
+                                    <div style="clear: both"></div>
+                                    <li>
+                                        <select name="store" data-placeholder="仓库">
+                                            <php>foreach($storeList as $key=>$v){</php>
+                                            <option value=""></option>
+                                            <option value="{$key}" <php>if($store == $key){echo "selected";}</php>>{$v}</option>
+                                            <php>}</php>
+                                        </select>
+                                    </li>
+                                    <li>
+                                        <select name="hasInventory" data-placeholder="是否有库存">
+                                            <option value=""></option>
+                                            <option value="1" <php>if($hasInventory === '1')echo 'selected="selected"';</php>>有库存</option>
+                                            <option value="0" <php>if($hasInventory == '0')echo 'selected="selected"';</php>>无库存</option>
+                                        </select>
+                                    </li>
+                                    <li>
+                                        <select name="goods_atribute" data-placeholder="产品属性">
+                                            <option value=""></option>
+                                            <php>foreach($goodsAttributeList as $key=>$v){</php>
+                                            <option value="{$key}" <php>if($goods_atribute == $key){echo "selected";}</php>>{$v}</option>
+                                            <php>}</php>
+                                        </select>
+                                    </li>
+                                    <div style="clear: both"></div>
+                                </div>
+                                <div <php>if(isset($is_type)){echo 'style="width:100%;display:block;"';}else{echo 'style="width:100%;display:none;"';}</php> id="hideDiv">
+
+
+                                <div style="clear: both"></div>
+                            </div>
+                    </div>
+                    <input type="hidden" name="sort_name" value="{$sort_name}">
+                    <input type="hidden" name="sort_type" value="{$sort_type}">
+                    </form>
+                    <div style="width:100%;height:10px"></div>
+
+                    <table class="custom-table dataTable">
+                        <thead>
+                        <tr>
+                            <th width="2%"><input onclick="selectAll(this)" name="sel_all" type="checkbox"/></th>
+                            <th width="4%" style="text-align:left;">图片</th>
+                            <th width="15%" style="text-align:left;">商品名称</th>
+                            <th width="6%" style="text-align:left;">商品编号</th>
+                            <th width="6%" style="text-align:left;">分类</th>
+                            <!--<th width="6%" style="text-align:left;">类型</th>-->
+                            <th width="6%" style="text-align:left;">销售人员</th>
+                            <th type="sort" class="<?php echo $sort_type ? : sorting;?>" sort_name="goods_count" width="6%" style="text-align:left;">库存</th>
+                            <th width="6%">操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <notempty name="Product_dt">
+                            <volist name="Product_dt" id="v">
+                                <tr>
+                                    <td>
+                                        <input name="id" type="checkbox" value="{$v.goods_id}"/>
+                                        <php>if( $v['type'] == 1 ):</php>
+                                        <span class="showSon glyphicon glyphicon-chevron-right" style="margin-left: 4px;" data-value="{$v.goods_id}"></span>
+                                        <php>endif;</php>
+                                    </td>
+                                    <td style="text-align: left;position:relative ">
+                                        <img class="small-pic" title="点击查看大图"  onerror="this.src='/Public/NewTpl/img/no_picture.gif'" src="{$erpImgDir}images/{$v.goods_pic}" alt="{$v.goods_name}" height="50" width="50">
+                                        <img class="big-pic" style="display:none" onerror="this.src='/Public/NewTpl/img/no_picture.gif'" src="{$erpImgDir}images/{$v.goods_pic}" >
+                                    </td>
+                                    <td style="text-align: left;">{$v.goods_name}</td>
+                                    <td style="text-align: left;">{$v.goods_sn}</td>
+                                    <td style="text-align: left;">{$allCategories[$v['goods_category']]}</td>
+                                    <!--<td style="text-align: left;">{$typeList[$v['type']]}</td>-->
+                                    <td style="text-align: left;">{$v.salesuser}</td>
+                                    <td style="text-align: left;">{$v.goods_count}</td>
+
+                                    <!--<td style="text-align: left;">-->
+                                    <!--{$sku_sale_user_list[$v['goods_sn']]}-->
+                                    <!--</td>-->
+
+                                    <td>
+                                        <div class="btn-group">
+                                            <button type="button" onclick="addGoods('{$v.goods_sn}')" class="btn btn-info">
+                                                编辑
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <!--多属性展示-->
+                                <tr id="{$v.goods_id}" style="display: none"></tr>
+                                <!--多属性展示-->
+                            </volist>
+                            <else/>
+                            <tr>
+                                <td colspan="10">当前列表为空</td>
+                            </tr>
+                        </notempty>
+
+                        </tbody>
+                    </table>
+
+                    <div class="pagelistDown" style="margin-bottom: 30px" >{$page}</div>
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="xiaoxirenwu"></div>
+
+    <!--收缩菜单-->
+    <!--<div id="ss" class="ss2" style="cursor: pointer;"></div>-->
+
+</div>
+
+<script src="/Public/NewTpl/js/jquery-ui-1.10.4.min.js"></script>
+<script src="/Public/NewTpl/js/bootstrap.min.js-v=3.3.5"></script>
+
+<script src="/Public/NewTpl/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+<script src="/Public/NewTpl/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+
+<!-- Custom and plugin javascript -->
+<script src="/Public/NewTpl/js/inspinia.js"></script>
+<script src="/Public/NewTpl/js/plugins/pace/pace.min.js"></script>
+
+<script>
+    $('.btn-location').bind('click',function(){
+        window.location.href =  '<?php echo U("index");?>'+"/date/"+$(this).val();
+    });
+    /*
+     * 编辑产品信息
+     */
+    function editNewGoodsBaseInfo(goods_id) {
+        var url = '__URL__/editItem/id/' + goods_id;
+        var width = document.body.offsetWidth * 0.8;
+        var height = document.body.offsetHeight * 0.2;
+        layer.open({
+            type: 2,
+            title: '编辑商品信息',
+            shift: '1',
+            closeBtn: 1,
+            scrollbar: false,
+            maxmin: true,
+            area: ['80%', '20%'],
+            content: url
+        });
+    }
+
+    function checkall(){
+        var str="";
+        $("[name='id']:checked").each(function(){    //checked选中的状态
+            str= str + $(this).val()+',';
+        })
+        return str.substring(0,str.length-1);    //substring(start,stop)去掉逗号( ,)
+    }
+    function selectAll(a) {
+        $("[name='id']").each(function(){
+            return this.checked = a.checked ? "checked": ""
+        })
+        $("[name='sel_all']").each(function(){
+            return this.checked = a.checked ? "checked": ""
+        })
+    }
+    $(function () {
+        $('#addnew').click(function(){
+
+            window.location.href="/admin.php/Product/add.html";
+        });
+    });
+
+    $('[rel=refresh]').bind('click',function(){
+        window.location.reload();
+    });
+
+    $('tr').click('click',function(){
+        k=$(this).attr("show_id");
+        $('tr').css("background","#ffffff");
+        $(this).css("background","#f5f5f5");
+        // alert(k);
+        $.ajax({
+            type:'POST',
+            cache:false,
+            url:'<?php echo C('local_link');?>/admin.php/Product/show_description/',
+            dataType:'text',
+            data:"id="+k,
+            success:function(data)
+            {
+                $('[id="show"]').html(data);
+            }
+        });
+    });
+
+</script>
+
+<!-- Data Tables -->
+<script src="/Public/NewTpl/js/plugins/dataTables/jquery.dataTables.js"></script>
+<script src="/Public/NewTpl/js/plugins/dataTables/dataTables.bootstrap.js"></script>
+<!--layer-->
+<script src="/Public/NewTpl/layer/layer.js"></script>
+
+<!--公用js-->
+<script src="/Public/NewTpl/js/common.js"></script>
+
+
+<script>
+    $('#ss').click(function() {
+        if($('#ss').attr('class') == 'ss1') {
+            $('#ss').removeClass('ss1').addClass('ss2');
+        } else {
+            $('#ss').removeClass('ss2').addClass('ss1');
+
+        }
+        $("body").toggleClass("mini-navbar");
+        SmoothlyMenu();
+    });
+</script>
+
+<!--模态框html-->
+<block name="modai_html"></block>
+
+<!--额外js-->
+<script>
+    $(function () {
+        $('select[name=searchType]').chosen({search_contains: true, width: "100%", allow_single_deselect: true});
+        $('select[name=type]').chosen({search_contains: true, width: "100%", allow_single_deselect: true});
+        $('select[name=page_size]').chosen({search_contains: true, width: "100%"});
+        $('select[name=is_type]').chosen({search_contains: true, width: "100%"});
+        $('select[name=store]').chosen({search_contains: true, width: "100%"});
+        $('select[name=hasInventory]').chosen({search_contains: true, width: "100%", allow_single_deselect: true});
+        $('select[name=goods_atribute]').chosen({search_contains: true, width: "100%", allow_single_deselect: true});
+        $('select[name=partner]').chosen({search_contains: true, width: "100%", allow_single_deselect: true});
+        $('select[name=categoryPid]').chosen({search_contains: true, width: "100%", allow_single_deselect: true});
+        $('select[name=kfuser]').chosen({no_results_text: '没有找到', width: "100%", allow_single_deselect: true});
+        $('select[name=cguser]').chosen({
+            no_results_text: '没有找到',
+            width: "100%",
+            allow_single_deselect: true
+        });
+        $('select[name=sale_user]').chosen({no_results_text: '没有找到', width: "100%", allow_single_deselect: true});
+        $('select[name=warehouse]').chosen({no_results_text: '没有找到', width: "100%", allow_single_deselect: true});
+
+        //分类联动
+        $('select[name=categoryPid]').change(function () {
+            var parentId = $(this).val();
+            $('select[name=category]').parents('li').remove();
+            if (parentId != '') {
+                $.ajax({
+                    type: "GET",
+                    url: "{:U('getCategoriesByParentId')}",
+                    data: "categoryPid=" + parentId,
+                    dataType: "json",
+                    success: function (msg) {
+                        var html = '<li><select name="category" data-placeholder="选择分类"><option value=""></option>';
+                        var i = 0;
+                        $.each(msg, function (index, value) {
+                            if (index != '' && value != '') {
+                                html += '<option value="' + index + '">' + value + '</option>';
+                                i++;
+                            }
+                        })
+                        html += '</select></li>';
+                        if (i > 0) {
+                            $('select[name=categoryPid]').parents('li').after(html);
+                            $('select[name=category]').chosen({
+                                search_contains: true,
+                                width: '100%',
+                                allow_single_deselect: true
+                            });
+                        }
+                    }
+                });
+            }else{
+                $('select[name=category]').parent('li').remove();
+            }
+        })
+
+    })
+
+
+
+    /**
+     * 编辑产品信息
+     */
+    function addGoods(sku) {
+        var url = '{:U("addItem")}/sku/'+sku;
+        layer.open({
+            type: 2,
+            title: '编辑商品:'+sku,
+            shift: '1',
+            closeBtn: 1,
+            scrollbar: false,
+            maxmin: true,
+            area: ['85%', '85%'],
+            content: url
+        })
+    }
+
+    $('[type="sort"]' ).on('click', function() {
+        $('input[name=sort_name]').val($(this).attr('sort_name'));
+        switch ($(this ).prop('class')) {
+            case 'sorting_asc':
+                $(this ).prop('class', 'sorting');
+                break;
+            case 'sorting_desc':
+                $(this ).prop('class', 'sorting_asc');
+                break;
+            case 'sorting':
+                $(this ).prop('class', 'sorting_desc');
+                break;
+        }
+        $('input[name=sort_type]').val($(this).prop('class'));
+        $('#searchForm').click();
+    })
+
+    /*
+     * 搜索
+     */
+    function searchs(obj) {
+        var dataInput = '<?php echo $_GET["date"]?>';
+        var data = $(obj).closest('form').serialize();
+        data = data.replace(/(&|^)(\w*?\d*?\-*?_*?)*?=?((?=&)|(?=$))/g, '');
+        data = data.replace(/^&/g, '');
+        data = data+'&date=' + dataInput;
+        var url = $('#submit').attr('action');
+        if (url.indexOf('?') > 0) {
+            url += '&' + data;
+        } else {
+            url += '?' + data;
+        }
+        location.href = url;
+    }
+
+    /*
+     * 打开关闭高级搜索
+     */
+    function showMoreSearchs() {
+        $('#hideDiv').toggle('2000');
+    }
+
+    /*
+     * 切换分页大小
+     */
+    function changePagesize(obj) {
+        var data = $(obj).closest('form').serialize();
+        data = data.replace(/(&|^)(\w*?\d*?\-*?_*?)*?=?((?=&)|(?=$))/g, '');
+        data = data.replace(/^&/g, '');
+        var url = $('#submit').attr('action');
+        if (url.indexOf('?') > 0) {
+            url += '&' + data;
+        } else {
+            url += '?' + data;
+        }
+        location.href = url;
+    }
+
+    /*显示大图*/
+    $('table').on('click','.small-pic',function(){
+        var height = $(this).next('.big-pic').height();
+        var width = $(this).next('.big-pic').width();
+
+        if(height>500){
+            var pp = height/500;
+            width = width/pp;
+            height = 500;
+            $(this).next('.big-pic').height(height);
+            $(this).next('.big-pic').height(width);
+        }
+        if(width>500){
+            var pp = width/500;
+            height = height/pp;
+            width = 500;
+            $(this).next('.big-pic').height(height);
+            $(this).next('.big-pic').height(width);
+        }
+        $(this).next('.big-pic').css({'height':height,'width':width});
+        layer.open({
+            type: 1,
+            title: false,
+            closeBtn: 0,
+            area: ['auto','auto'],
+            skin: 'layui-layer-nobg', //没有背景色
+            shadeClose: true,
+            content: $(this).next('.big-pic')
+        });
+    })
+
+    /**
+     * *
+     * 产品多属性展示
+     *
+     */
+    $(".showSon").click(function(){
+
+        var goods_id = $(this).attr('data-value');
+
+        if($(this).attr('class') == 'showSon glyphicon glyphicon-chevron-down'){
+            $(this).removeClass('glyphicon-chevron-down').addClass('glyphicon-chevron-right');
+        }else{
+
+            var old_data = $("#"+goods_id).html();
+            if( !old_data ){
+                //加载多属性
+                $.ajax({
+                    type: "GET",
+                    url: "__APP__/Products/ProductsInformation/getgoodsAttrInfoAjax",
+                    data: "id=" + goods_id,
+                    dataType: "json",
+                    success: function (msg) {
+
+                        var data = eval(msg.arr);
+
+                        if( data.length >= 1 ){
+
+                            var attrList = eval(data[0].attr_list);
+
+                            var html = '<td colspan="8" width="100%"><table class="custom-table dataTable table" style="margin-bottom:0;" width="100%"><tr><td width="20%">商品名称</td><td>编号</td><td>商品图片</td>';
+
+                            if( attrList ){
+                                for(var j=0; j<attrList.length; j++)
+                                {
+                                    html += '<td>'+attrList[j].names.en+'('+attrList[j].names.zh+')</td>';
+                                }
+                            }
+
+                            html += "<td>采购价(RMB)</td><td>重量(g)</td></tr>";
+
+                            for(var i=0; i<data.length; i++)
+                            {
+                                html += '<tr><td>'+data[i].goods_name+'</td><td>'+data[i].sku+'</td><td><img src="/images/'+data[i].goods_pic+'" style="width:50px;height:50px" /></td>';
+
+                                if( data[i].attr_list ){
+                                    $.each(eval(data[i].attr_list), function (attrListK, attrListV) {
+                                        html += '<td>'+attrListV.value.names.en+'('+attrListV.value.names.zh+')</td>';
+                                    });
+                                }
+
+                                html += '<td>'+data[i].purchase_price+'</td><td>'+(Number(data[i].goods_weight)*1000)+'</td></tr>';
+                            }
+
+
+                            html += '</table></td>';
+
+                            $("#"+goods_id).html(html);
+                        }
+
+                    }
+                });
+            }
+            $(this).removeClass('glyphicon-chevron-right').addClass('glyphicon-chevron-down');
+        }
+
+        $("#"+goods_id).slideToggle('fast');
+    })
+
+    // 多属性产品默然信息列表展示
+//    function showVariantInfoList()
+//    {
+//
+//    }
+
+
+</script>

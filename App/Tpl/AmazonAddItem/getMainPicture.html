@@ -1,0 +1,99 @@
+<literal>
+    <link rel="stylesheet" href="__PUBLIC__/css/modernforms.css">
+    <link rel="stylesheet" href="__PUBLIC__/css/font-awesome.min.css">
+    <link rel="stylesheet" href="__PUBLIC__/css/table.css" >
+    <link rel="stylesheet" href="__PUBLIC__/express-css-table-design/style.css" >
+    <script type="text/javascript" src="__PUBLIC__/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/layer/2.1/layer.js"></script>
+    <style>
+        /*.modern-forms .mdn-select-multiple select {height: 250px; background:#ebf0ef;overflow:scroll;}*/
+    </style>
+</literal>
+<div class="modern-forms">
+    <div class="modern-container" style="padding: 0 20px; max-width: 90%;margin-top: 10px;">
+        <fieldset>
+            <div class="form-row">
+                <div class="col col-12">
+                    <div class="field-group">
+                        <php>
+                            if(count($pics) == 0){
+                                echo "<h1 style='text-align: center;'>图片库暂时还没上传该SKU相关图片!</h1>";
+                            }else{
+                            foreach($pics as $pic){
+                                $picsrc = $pic->pic;
+                        </php>
+                        <div style="float:left;width:24%;margin-left:1px;height:150px;margin-bottom:10px;">
+                            <div style="float:left;width:100%;text-align: center;">
+                                <img src="{$picsrc}" width="120" height="120"/>
+                            </div>
+                            <div style="float:left;width:100%;text-align: center;">
+                                <label class="mdn-option">
+                                    <input type="checkbox" value="{$picsrc}">
+                                    <span class="mdn-checkbox"></span>
+                                </label>
+                            </div>
+                        </div>
+                        <php>}}</php>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+        <div class="mdn-footer" style="position:fixed;bottom:0px;left:30px;text-align: center;width:720px;height:70px;background: white;padding-top:10px;border-top:1px solid #aaa;">
+        <input type="hidden" id="hidenAcc" value="{$account}"/>
+        <button type="button" class="mdn-button btn-primary submit"  >提交</button>
+        </div>
+        <div id="contentTable" style="width: 100%;">
+        </div>
+    </div>
+    <div id="myShow" style="display:none;"><img src="__PUBLIC__/images/loading_circle.gif"/></div>
+</div>
+
+<script>
+
+    $(':checkbox' ).on('click', function() {
+        var account = $('#hidenAcc').val();
+        var pic = $(this ).closest('div' ).prev().find('img' ).attr('src');
+        $("#myShow").css({
+            display: "",
+            bottom: "50%",
+            left: "50%",
+            position: "absolute"
+        });
+        $.ajax({
+            url:'{:U("imageUrlUpload")}',
+            type: 'post',
+            dataType: 'json',
+            data: 'picUrl='+pic,
+            async: false,
+            success: function(data) {
+                if(data['code'] == 0) {
+                    pic = data['path' ].replace(':80', '');
+                } else {
+                    pic = '';
+                }
+            }
+        });
+        if(typeof parent.onMainPicSelect == 'function'){
+        	parent.onMainPicSelect(pic);
+        	parent.layer.closeAll();
+        	return;
+        }
+        var objButton = $("[clickFlag=on]", window.parent.document);
+        var sku = objButton.closest('tr' ).find('.variantSku :input').val();
+        var nameStr = '';
+        var elementName = objButton.attr('elementName' );
+        var file_num = Math.floor(Math.random() * 90000) + 10000;
+        if(sku != '') {
+            var account = objButton.closest('tbody' ).attr('account');
+            var nameStr = elementName.replace(/sku-.*?\]/, 'sku-' + sku + ']');
+            var pictureHtml = '<img elementName="' + elementName + '" src="' + pic + '" width="70" height="70" class="choosePicture"><input isRequired="1" datatype="string" type="hidden" name="' + nameStr + '" value="' + pic + '"><input id="file'+file_num+'" name="file'+file_num+'" onchange="mainPictureFileChange(this)" type="file" style="display:none;" value="" class="uploadMainPic">';
+        } else {
+            var pictureHtml = '<img elementName="' + elementName + '" src="' + pic + '" width="70" height="70" class="choosePicture"><input isRequired="1" datatype="string" type="hidden" name="' + elementName + '" value="' + pic + '"><input id="file'+file_num+'" name="file'+file_num+'" onchange="mainPictureFileChange(this)" type="file" style="display:none;" value="" class="uploadMainPic">';
+        }
+        objButton.closest('td').html(pictureHtml);
+        parent.mainPicAddOneAndTwoClick();
+        $("#myShow").hide();
+        parent.layer.closeAll();
+    });
+
+</script>

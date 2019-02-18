@@ -1,0 +1,42 @@
+CREATE TABLE `sys_amazon_category_node` (
+  `id` mediumint(9) NOT NULL AUTO_INCREMENT,
+  `cate_id` mediumint(9) NOT NULL DEFAULT '0' COMMENT '分类ID',
+  `p_node_id` mediumint(9) NOT NULL DEFAULT '0' COMMENT '父节点ID',
+  `file_id` mediumint(9) NOT NULL DEFAULT '0' COMMENT '所属文件ID',
+  `node_name` varchar(150) NOT NULL DEFAULT '' COMMENT 'xml节点名',
+  `min_occurs` tinyint(4) NOT NULL DEFAULT '-1' COMMENT '节点最小出现次数',
+  `max_occurs` tinyint(4) NOT NULL DEFAULT '-1' COMMENT '节点最大出现次数',
+  `documentation` varchar(500) NOT NULL DEFAULT '' COMMENT '节点说明文档',
+  `required_level` tinyint(4) NOT NULL DEFAULT '0' COMMENT '0：不必须可选 1：不必须不可选 2：必须可选  3：必须不可选',
+  `ref` varchar(150) NOT NULL DEFAULT '' COMMENT '关联类型',
+  `node_type` varchar(150) NOT NULL DEFAULT '' COMMENT '节点类型',
+  `check_type` varchar(150) NOT NULL DEFAULT '' COMMENT '验证类型',
+  `attributes` varchar(255) NOT NULL DEFAULT '' COMMENT '属性',
+  `options` text NOT NULL COMMENT '可选项',
+  `is_display_type` tinyint(4) NOT NULL DEFAULT '0' COMMENT '是否最后一级节点',
+  `has_child_node` tinyint(4) NOT NULL DEFAULT '0' COMMENT '是否含有子节点 0：不含子节点 1：含有子节点',
+  `min_length` mediumint(9) NOT NULL DEFAULT '0' COMMENT '字符串最小长度',
+  `max_length` mediumint(9) NOT NULL DEFAULT '0' COMMENT '字符串类型最大长度',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=10723 DEFAULT CHARSET=utf8;
+
+CREATE TABLE `sys_amazon_base_node_type` (
+  `id` mediumint(9) NOT NULL AUTO_INCREMENT,
+  `cate_id` mediumint(9) NOT NULL DEFAULT '0' COMMENT '分类ID  0代表公共类型',
+  `p_node_id` mediumint(9) NOT NULL DEFAULT '-1' COMMENT '父节点ID',
+  `node_name` varchar(150) NOT NULL DEFAULT '' COMMENT 'xml节点名',
+  `min_occurs` tinyint(4) NOT NULL DEFAULT '-1' COMMENT '节点最小出现次数',
+  `max_occurs` tinyint(4) NOT NULL DEFAULT '-1' COMMENT '节点最大出现次数',
+  `documentation` varchar(500) NOT NULL DEFAULT '' COMMENT '节点说明文档',
+  `required_level` tinyint(4) NOT NULL DEFAULT '0' COMMENT '0：不必须可选 1：不必须不可选 2：必须可选  3：必须不可选',
+  `ref` varchar(150) NOT NULL DEFAULT '' COMMENT '关联类型',
+  `node_type` varchar(150) NOT NULL DEFAULT '' COMMENT '节点类型',
+  `check_type` varchar(150) NOT NULL DEFAULT '',
+  `attributes` varchar(255) NOT NULL DEFAULT '' COMMENT '属性',
+  `options` text NOT NULL COMMENT '可选项',
+  `is_display_type` tinyint(4) NOT NULL DEFAULT '0' COMMENT '是否最后一级节点',
+  `has_child_node` varchar(255) NOT NULL DEFAULT '0' COMMENT '是否含有子节点 0：不含子节点 1：含有子节点',
+  `min_length` mediumint(9) NOT NULL DEFAULT '0' COMMENT '字符串最小长度',
+  `max_length` mediumint(9) NOT NULL DEFAULT '0' COMMENT '字符串类型最大长度',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1292 DEFAULT CHARSET=utf8;
